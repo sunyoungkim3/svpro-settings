@@ -88,32 +88,97 @@ export default function SettingsPopup() {
     // Assay Pack
     assaySearch: '',
     assayList: [
-      { id: 1, name: 'Allplex SARS-CoV-2', intendedUse: 'IVD', assayCode: 'COV2',
+      { 
+        id: 1, 
+        name: 'Allplex SARS-CoV-2', 
+        intendedUse: 'IVD', 
+        version: '1.0.0',
+        manufacturer: 'Seegene',
+        installDate: '2024-01-15',
         targets: [
-          { id: 1, channel: 'FAM', dye: 'FAM', target: 'E gene', targetCode: 'EGENE' },
-          { id: 2, channel: 'HEX', dye: 'HEX', target: 'RdRP gene', targetCode: 'RDRP' },
-          { id: 3, channel: 'Cal Red 610', dye: 'CR610', target: 'N gene', targetCode: 'NGENE' },
-          { id: 4, channel: 'Quasar 670', dye: 'Q670', target: 'IC', targetCode: 'IC' },
+          { id: 1, channel: 'FAM', dye: 'FAM', target: 'E gene', enabled: true },
+          { id: 2, channel: 'HEX', dye: 'HEX', target: 'RdRP gene', enabled: true },
+          { id: 3, channel: 'Cal Red 610', dye: 'CR610', target: 'N gene', enabled: true },
+          { id: 4, channel: 'Quasar 670', dye: 'Q670', target: 'IC', enabled: true },
         ]
       },
-      { id: 2, name: 'Allplex Respiratory Panel 1', intendedUse: 'IVD', assayCode: 'RP1',
+      { 
+        id: 2, 
+        name: 'Allplex Respiratory Panel 1', 
+        intendedUse: 'IVD', 
+        version: '2.1.0',
+        manufacturer: 'Seegene',
+        installDate: '2024-02-20',
         targets: [
-          { id: 1, channel: 'FAM', dye: 'FAM', target: 'Flu A', targetCode: 'FLUA' },
-          { id: 2, channel: 'HEX', dye: 'HEX', target: 'Flu B', targetCode: 'FLUB' },
-          { id: 3, channel: 'Cal Red 610', dye: 'CR610', target: 'RSV A', targetCode: 'RSVA' },
-          { id: 4, channel: 'Quasar 670', dye: 'Q670', target: 'RSV B', targetCode: 'RSVB' },
+          { id: 1, channel: 'FAM', dye: 'FAM', target: 'Flu A', enabled: true },
+          { id: 2, channel: 'HEX', dye: 'HEX', target: 'Flu B', enabled: true },
+          { id: 3, channel: 'Cal Red 610', dye: 'CR610', target: 'RSV A', enabled: true },
+          { id: 4, channel: 'Quasar 670', dye: 'Q670', target: 'RSV B', enabled: true },
+          { id: 5, channel: 'Quasar 705', dye: 'Q705', target: 'ADV', enabled: true },
         ]
       },
-      { id: 3, name: 'Allplex GI-Bacteria', intendedUse: 'IVD', assayCode: 'GIB',
+      { 
+        id: 3, 
+        name: 'Allplex GI-Bacteria', 
+        intendedUse: 'IVD', 
+        version: '1.5.2',
+        manufacturer: 'Seegene',
+        installDate: '2024-03-10',
         targets: [
-          { id: 1, channel: 'FAM', dye: 'FAM', target: 'E gene', targetCode: 'EGENE' },
-          { id: 2, channel: 'HEX', dye: 'HEX', target: 'RdRP gene', targetCode: 'RDRP' },
-          { id: 3, channel: 'Cal Red 610', dye: 'CR610', target: 'N gene', targetCode: 'NGENE' },
-          { id: 4, channel: 'Quasar 670', dye: 'Q670', target: 'IC', targetCode: 'IC' },
+          { id: 1, channel: 'FAM', dye: 'FAM', target: 'Salmonella', enabled: true },
+          { id: 2, channel: 'HEX', dye: 'HEX', target: 'Shigella', enabled: true },
+          { id: 3, channel: 'Cal Red 610', dye: 'CR610', target: 'E.coli', enabled: true },
+        ]
+      },
+      { 
+        id: 4, 
+        name: 'GenePlex COVID-19 Detection Kit', 
+        intendedUse: 'RUO', 
+        version: '1.2.0',
+        manufacturer: 'new-co',
+        installDate: '2024-04-15',
+        targets: [
+          { id: 1, channel: 'FAM', dye: 'FAM', target: 'ORF1ab', enabled: true },
+          { id: 2, channel: 'HEX', dye: 'HEX', target: 'N gene', enabled: true },
+        ]
+      },
+      { 
+        id: 5, 
+        name: 'GenePlex Influenza Panel', 
+        intendedUse: 'IVD', 
+        version: '2.0.1',
+        manufacturer: 'new-co',
+        installDate: '2024-05-20',
+        targets: [
+          { id: 1, channel: 'FAM', dye: 'FAM', target: 'Influenza A', enabled: true },
+          { id: 2, channel: 'HEX', dye: 'HEX', target: 'Influenza B', enabled: true },
+          { id: 3, channel: 'Cal Red 610', dye: 'CR610', target: 'H1N1', enabled: true },
+        ]
+      },
+      { 
+        id: 6, 
+        name: 'GenePlex STI Panel', 
+        intendedUse: 'IVD', 
+        version: '1.8.0',
+        manufacturer: 'new-co',
+        installDate: '2024-06-10',
+        targets: [
+          { id: 1, channel: 'FAM', dye: 'FAM', target: 'CT', enabled: true },
+          { id: 2, channel: 'HEX', dye: 'HEX', target: 'NG', enabled: true },
+          { id: 3, channel: 'Cal Red 610', dye: 'CR610', target: 'MG', enabled: true },
+          { id: 4, channel: 'Quasar 670', dye: 'Q670', target: 'TV', enabled: true },
         ]
       },
     ],
-    selectedAssay: null
+    selectedAssay: null,
+    showAddAssayModal: false,
+    newAssay: {
+      name: '',
+      intendedUse: 'IVD',
+      version: '',
+      manufacturer: '',
+      installDate: ''
+    }
   });
 
   const tabs = [
@@ -214,6 +279,55 @@ export default function SettingsPopup() {
 
   const handleCancelAnalysisTabClose = () => {
     setShowAnalysisTabWarning(false);
+  };
+
+  // Assay Pack 관련 함수
+  const handleAddAssay = () => {
+    if (!settings.newAssay.name || !settings.newAssay.version || !settings.newAssay.manufacturer || !settings.newAssay.installDate) {
+      alert('모든 필수 항목을 입력해주세요.');
+      return;
+    }
+
+    const newAssay = {
+      id: settings.assayList.length + 1,
+      name: settings.newAssay.name,
+      intendedUse: settings.newAssay.intendedUse,
+      version: settings.newAssay.version,
+      manufacturer: settings.newAssay.manufacturer,
+      installDate: settings.newAssay.installDate
+    };
+
+    setSettings(prev => ({
+      ...prev,
+      assayList: [...prev.assayList, newAssay],
+      showAddAssayModal: false,
+      newAssay: {
+        name: '',
+        intendedUse: 'IVD',
+        version: '',
+        manufacturer: '',
+        installDate: ''
+      }
+    }));
+    setHasUnsavedChanges(true);
+  };
+
+  const handleDeleteAssay = (assayId) => {
+    if (confirm('선택한 Assay Pack을 삭제하시겠습니까?')) {
+      setSettings(prev => ({
+        ...prev,
+        assayList: prev.assayList.filter(a => a.id !== assayId),
+        selectedAssay: prev.selectedAssay === assayId ? null : prev.selectedAssay
+      }));
+      setHasUnsavedChanges(true);
+    }
+  };
+
+  const updateNewAssay = (key, value) => {
+    setSettings(prev => ({
+      ...prev,
+      newAssay: { ...prev.newAssay, [key]: value }
+    }));
   };
 
   const handleClose = () => {
@@ -2142,118 +2256,231 @@ export default function SettingsPopup() {
                     </div>
                   </div>
 
-                  <div className="target-onoff-container">
-                    {/* Assay Pack 목록 */}
-                    <div className="target-panel assay-list-panel">
-                      <div className="panel-header">
-                        <h3>Assay Pack 목록</h3>
-                      </div>
-                      <div className="panel-search">
-                        <div className="search-box" style={{ width: '100%' }}>
-                          <span>🔍</span>
-                          <input 
-                            type="text" 
-                            placeholder="Assay 검색..." 
-                            value={settings.assaySearch}
-                            onChange={(e) => updateSetting('assaySearch', e.target.value)}
-                            style={{ width: '100%' }}
-                          />
-                        </div>
-                      </div>
-                      <div className="assay-list">
-                        {settings.assayList
-                          .filter(a => a.name.toLowerCase().includes(settings.assaySearch.toLowerCase()))
-                          .map(assay => (
-                          <div 
-                            key={assay.id}
-                            className={`assay-list-item ${settings.selectedAssay === assay.id ? 'selected' : ''}`}
-                            onClick={() => updateSetting('selectedAssay', assay.id)}
-                          >
-                            <div className="assay-item-info">
-                              <div className="assay-item-name">{assay.name}</div>
-                              <div className="assay-item-meta">
-                                <span className="badge">{assay.intendedUse}</span>
-                                <span className="target-count">{assay.targets.length} targets</span>
-                              </div>
-                            </div>
-                            <span className="assay-item-arrow">›</span>
-                          </div>
-                        ))}
+                  {/* Assay Pack 목록 */}
+                  <div style={{ marginBottom: '20px' }}>
+                    <div style={{ 
+                      display: 'flex', 
+                      justifyContent: 'space-between', 
+                      alignItems: 'center',
+                      marginBottom: '15px',
+                      padding: '10px 15px',
+                      background: '#f8f9fa',
+                      borderRadius: '8px'
+                    }}>
+                      <h3 style={{ margin: 0, fontSize: '16px', fontWeight: '600' }}>Assay Pack 목록</h3>
+                      <div className="search-box" style={{ width: '300px' }}>
+                        <span>🔍</span>
+                        <input 
+                          type="text" 
+                          placeholder="Assay 검색..." 
+                          value={settings.assaySearch}
+                          onChange={(e) => updateSetting('assaySearch', e.target.value)}
+                          style={{ width: '100%' }}
+                        />
                       </div>
                     </div>
+                    
+                    <div className="data-table">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th style={{ width: '40%' }}>Assay Name</th>
+                            <th style={{ width: '15%' }}>Intended Use</th>
+                            <th style={{ width: '15%' }}>제조사</th>
+                            <th style={{ width: '15%' }}>Version</th>
+                            <th style={{ width: '15%' }}>Targets</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {settings.assayList
+                            .filter(a => a.name.toLowerCase().includes(settings.assaySearch.toLowerCase()))
+                            .map(assay => (
+                            <tr 
+                              key={assay.id}
+                              className={settings.selectedAssay === assay.id ? 'selected' : ''}
+                              onClick={() => {
+                                updateSetting('selectedAssay', assay.id);
+                              }}
+                              style={{ cursor: 'pointer' }}
+                            >
+                              <td style={{ fontWeight: '500' }}>{assay.name}</td>
+                              <td>
+                                <span className="badge" style={{
+                                  background: assay.intendedUse === 'IVD' ? '#dcfce7' : assay.intendedUse === 'RUO' ? '#e0e7ff' : '#fef3c7',
+                                  color: assay.intendedUse === 'IVD' ? '#166534' : assay.intendedUse === 'RUO' ? '#3730a3' : '#92400e',
+                                  padding: '4px 8px',
+                                  borderRadius: '4px',
+                                  fontSize: '12px',
+                                  fontWeight: '500'
+                                }}>
+                                  {assay.intendedUse}
+                                </span>
+                              </td>
+                              <td>{assay.manufacturer}</td>
+                              <td style={{ fontFamily: 'monospace', color: '#6b7280' }}>{assay.version}</td>
+                              <td style={{ textAlign: 'center' }}>
+                                <span style={{
+                                  background: '#dbeafe',
+                                  color: '#1e40af',
+                                  padding: '4px 10px',
+                                  borderRadius: '12px',
+                                  fontSize: '12px',
+                                  fontWeight: '600'
+                                }}>
+                                  {assay.targets?.length || 0}
+                                </span>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                      {settings.assayList.filter(a => a.name.toLowerCase().includes(settings.assaySearch.toLowerCase())).length === 0 && (
+                        <div className="empty-state">
+                          <div className="empty-icon">🔍</div>
+                          <p>검색 결과가 없습니다.</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
 
-                    {/* Target 목록 및 On/Off 설정 */}
-                    <div className="target-panel target-list-panel">
-                      <div className="panel-header">
-                        <h3>Target 설정</h3>
+                  {/* Target 설정 영역 */}
+                  <div style={{
+                    border: '2px solid #3b82f6',
+                    borderRadius: '8px',
+                    padding: '20px',
+                    background: '#f8fafc'
+                  }}>
+                    <div style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: '15px'
+                    }}>
+                      <div>
+                        <h3 style={{ margin: '0 0 5px 0', color: '#1e40af', fontSize: '16px' }}>
+                          Target 설정
+                        </h3>
                         {settings.selectedAssay && (
-                          <span className="panel-subtitle">
+                          <span style={{ fontSize: '14px', color: '#6b7280' }}>
                             {settings.assayList.find(a => a.id === settings.selectedAssay)?.name}
                           </span>
                         )}
                       </div>
-                      
-                      {settings.selectedAssay ? (
-                        <div className="target-list">
-                          <div className="target-list-header">
-                            <span className="th-channel">Channel</span>
-                            <span className="th-dye">Dye</span>
-                            <span className="th-target">Target</span>
-                            <span className="th-toggle">표시</span>
-                          </div>
-                          {settings.assayList
-                            .find(a => a.id === settings.selectedAssay)
-                            ?.targets.map((target, idx) => (
-                            <div key={target.id} className="target-list-row">
-                              <span className="td-channel">{target.channel}</span>
-                              <span className="td-dye">
-                                <span className="badge dye">{target.dye}</span>
-                              </span>
-                              <span className="td-target">{target.target}</span>
-                              <span className="td-toggle">
-                                <div 
-                                  className={`toggle ${target.targetCode !== '' ? 'active' : ''}`}
-                                  style={{ transform: 'scale(0.85)', cursor: 'pointer' }}
-                                  onClick={() => {
-                                    setTargetOnOffChanged(true);
-                                    setHasUnsavedChanges(true);
-                                  }}
-                                />
-                                <span className="toggle-status">{target.targetCode !== '' ? 'ON' : 'OFF'}</span>
-                              </span>
-                            </div>
-                          ))}
-                          
-                          <div className="target-actions">
-                            <button 
-                              className="btn btn-secondary" 
-                              style={{ fontSize: 12, padding: '6px 12px' }}
-                              onClick={() => {
-                                setTargetOnOffChanged(true);
-                                setHasUnsavedChanges(true);
-                              }}
-                            >
-                              전체 OFF
-                            </button>
-                            <button 
-                              className="btn btn-primary" 
-                              style={{ fontSize: 12, padding: '6px 12px' }}
-                              onClick={() => {
-                                setTargetOnOffChanged(true);
-                                setHasUnsavedChanges(true);
-                              }}
-                            >
-                              전체 ON
-                            </button>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="empty-state">
-                          <div className="empty-icon">👈</div>
-                          <p>왼쪽 Assay 목록에서<br/>항목을 선택하세요</p>
+                      {settings.selectedAssay && (
+                        <div style={{ display: 'flex', gap: '10px' }}>
+                          <button 
+                            className="btn btn-secondary"
+                            style={{ fontSize: '13px', padding: '8px 16px' }}
+                            onClick={() => {
+                              const newList = settings.assayList.map(a => {
+                                if (a.id === settings.selectedAssay) {
+                                  return {
+                                    ...a,
+                                    targets: a.targets.map(t => ({ ...t, enabled: false }))
+                                  };
+                                }
+                                return a;
+                              });
+                              updateSetting('assayList', newList);
+                              setTargetOnOffChanged(true);
+                            }}
+                          >
+                            전체 OFF
+                          </button>
+                          <button 
+                            className="btn btn-primary"
+                            style={{ fontSize: '13px', padding: '8px 16px' }}
+                            onClick={() => {
+                              const newList = settings.assayList.map(a => {
+                                if (a.id === settings.selectedAssay) {
+                                  return {
+                                    ...a,
+                                    targets: a.targets.map(t => ({ ...t, enabled: true }))
+                                  };
+                                }
+                                return a;
+                              });
+                              updateSetting('assayList', newList);
+                              setTargetOnOffChanged(true);
+                            }}
+                          >
+                            전체 ON
+                          </button>
                         </div>
                       )}
                     </div>
+
+                    {settings.selectedAssay ? (
+                      <div className="data-table">
+                        <table>
+                          <thead>
+                            <tr>
+                              <th style={{ width: '25%' }}>Channel</th>
+                              <th style={{ width: '20%' }}>Dye</th>
+                              <th style={{ width: '35%' }}>Target</th>
+                              <th style={{ width: '20%', textAlign: 'center' }}>표시</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {settings.assayList
+                              .find(a => a.id === settings.selectedAssay)
+                              ?.targets.map(target => (
+                              <tr key={target.id}>
+                                <td>{target.channel}</td>
+                                <td>
+                                  <span className="badge dye" style={{
+                                    background: '#e0e7ff',
+                                    color: '#3730a3',
+                                    padding: '4px 8px',
+                                    borderRadius: '4px',
+                                    fontSize: '12px',
+                                    fontWeight: '500'
+                                  }}>
+                                    {target.dye}
+                                  </span>
+                                </td>
+                                <td style={{ fontWeight: '500' }}>{target.target}</td>
+                                <td style={{ textAlign: 'center' }}>
+                                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                                    <div 
+                                      className={`toggle ${target.enabled ? 'active' : ''}`}
+                                      style={{ cursor: 'pointer' }}
+                                      onClick={() => {
+                                        const newList = settings.assayList.map(a => {
+                                          if (a.id === settings.selectedAssay) {
+                                            return {
+                                              ...a,
+                                              targets: a.targets.map(t =>
+                                                t.id === target.id ? { ...t, enabled: !t.enabled } : t
+                                              )
+                                            };
+                                          }
+                                          return a;
+                                        });
+                                        updateSetting('assayList', newList);
+                                        setTargetOnOffChanged(true);
+                                      }}
+                                    />
+                                    <span style={{ 
+                                      fontSize: '13px', 
+                                      fontWeight: '600',
+                                      color: target.enabled ? '#10b981' : '#6b7280'
+                                    }}>
+                                      {target.enabled ? 'ON' : 'OFF'}
+                                    </span>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    ) : (
+                      <div className="empty-state">
+                        <div className="empty-icon">☝️</div>
+                        <p>위 Assay Pack 목록에서<br/>항목을 선택하세요</p>
+                      </div>
+                    )}
                   </div>
                 </>
               )}
@@ -2934,124 +3161,139 @@ export default function SettingsPopup() {
 
               {/* Assay Pack Tab */}
               {activeTab === 'assay' && (
-                <div className="assay-container">
-                  <div className="assay-panel">
-                    <div className="panel-header">
-                      <h3>Assay 목록</h3>
-                      <div className="search-box">
-                        <span>🔍</span>
-                        <input 
-                          type="text" 
-                          placeholder="Assay 검색..." 
-                          value={settings.assaySearch}
-                          onChange={(e) => updateSetting('assaySearch', e.target.value)}
-                        />
-                      </div>
+                <>
+                  <div className="assay-header" style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '20px',
+                    padding: '15px 20px',
+                    background: '#f8f9fa',
+                    borderRadius: '8px'
+                  }}>
+                    <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flex: 1 }}>
+                      <span style={{ fontSize: '18px' }}>🔍</span>
+                      <input 
+                        type="text" 
+                        placeholder="Assay Pack 검색 (이름, 제조사, 버전)..." 
+                        value={settings.assaySearch}
+                        onChange={(e) => updateSetting('assaySearch', e.target.value)}
+                        style={{
+                          flex: 1,
+                          padding: '10px 15px',
+                          border: '1px solid #ddd',
+                          borderRadius: '6px',
+                          fontSize: '14px'
+                        }}
+                      />
                     </div>
-                    <div className="data-table">
-                      <table>
-                        <thead>
-                          <tr>
-                            <th>Assay Name</th>
-                            <th>Intended Use</th>
-                            <th>Assay Code</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {settings.assayList
-                            .filter(a => a.name.toLowerCase().includes(settings.assaySearch.toLowerCase()))
-                            .map(assay => (
-                            <tr 
-                              key={assay.id} 
-                              className={settings.selectedAssay === assay.id ? 'selected' : ''}
-                              onClick={() => updateSetting('selectedAssay', assay.id)}
-                              style={{ cursor: 'pointer' }}
-                            >
-                              <td>{assay.name}</td>
-                              <td><span className="badge">{assay.intendedUse}</span></td>
-                              <td>
-                                <input 
-                                  type="text"
-                                  className="inline-input"
-                                  value={assay.assayCode}
-                                  onChange={(e) => {
-                                    const newList = settings.assayList.map(a => 
-                                      a.id === assay.id ? {...a, assayCode: e.target.value} : a
-                                    );
-                                    updateSetting('assayList', newList);
-                                  }}
-                                  onClick={(e) => e.stopPropagation()}
-                                />
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
+                    <button 
+                      className="btn btn-primary"
+                      onClick={() => updateSetting('showAddAssayModal', true)}
+                      style={{
+                        marginLeft: '15px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '5px',
+                        whiteSpace: 'nowrap'
+                      }}
+                    >
+                      <span style={{ fontSize: '16px' }}>➕</span>
+                      Assay Pack 추가
+                    </button>
                   </div>
 
-                  <div className="assay-panel">
-                    <div className="panel-header">
-                      <h3>Target 목록</h3>
-                      <span className="panel-subtitle">
-                        {settings.selectedAssay 
-                          ? settings.assayList.find(a => a.id === settings.selectedAssay)?.name
-                          : 'Assay를 선택하세요'}
-                      </span>
-                    </div>
-                    <div className="data-table">
-                      {settings.selectedAssay ? (
-                        <table>
-                          <thead>
-                            <tr>
-                              <th>Channel</th>
-                              <th>Dye</th>
-                              <th>Target</th>
-                              <th>Target Code</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {settings.assayList
-                              .find(a => a.id === settings.selectedAssay)
-                              ?.targets.map(target => (
-                              <tr key={target.id}>
-                                <td>{target.channel}</td>
-                                <td><span className="badge dye">{target.dye}</span></td>
-                                <td>{target.target}</td>
-                                <td>
-                                  <input 
-                                    type="text"
-                                    className="inline-input"
-                                    value={target.targetCode}
-                                    onChange={(e) => {
-                                      const newList = settings.assayList.map(a => {
-                                        if (a.id === settings.selectedAssay) {
-                                          return {
-                                            ...a,
-                                            targets: a.targets.map(t =>
-                                              t.id === target.id ? {...t, targetCode: e.target.value} : t
-                                            )
-                                          };
-                                        }
-                                        return a;
-                                      });
-                                      updateSetting('assayList', newList);
-                                    }}
-                                  />
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      ) : (
-                        <div className="empty-state">
-                          <div className="empty-icon">👆</div>
-                          <p>위 Assay 목록에서 항목을 선택하면<br/>해당 Assay의 Target 목록이 표시됩니다.</p>
-                        </div>
-                      )}
-                    </div>
+                  <div className="data-table" style={{ marginBottom: '30px' }}>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th style={{ width: '30%' }}>Assay Name</th>
+                          <th style={{ width: '15%' }}>Intended Use</th>
+                          <th style={{ width: '12%' }}>Version</th>
+                          <th style={{ width: '18%' }}>제조사</th>
+                          <th style={{ width: '15%' }}>Install Date</th>
+                          <th style={{ width: '10%' }}>삭제</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {settings.assayList
+                          .filter(a => {
+                            const search = settings.assaySearch.toLowerCase();
+                            return a.name.toLowerCase().includes(search) ||
+                                   a.manufacturer.toLowerCase().includes(search) ||
+                                   a.version.toLowerCase().includes(search);
+                          })
+                          .map(assay => (
+                          <tr 
+                            key={assay.id} 
+                            className={settings.selectedAssay === assay.id ? 'selected' : ''}
+                            onClick={() => updateSetting('selectedAssay', assay.id)}
+                            style={{ cursor: 'pointer' }}
+                          >
+                            <td style={{ fontWeight: '500' }}>{assay.name}</td>
+                            <td>
+                              <span className="badge" style={{
+                                background: assay.intendedUse === 'IVD' ? '#dcfce7' : assay.intendedUse === 'RUO' ? '#e0e7ff' : '#fef3c7',
+                                color: assay.intendedUse === 'IVD' ? '#166534' : assay.intendedUse === 'RUO' ? '#3730a3' : '#92400e',
+                                padding: '4px 8px',
+                                borderRadius: '4px',
+                                fontSize: '12px',
+                                fontWeight: '500'
+                              }}>
+                                {assay.intendedUse}
+                              </span>
+                            </td>
+                            <td style={{ fontFamily: 'monospace' }}>{assay.version}</td>
+                            <td>{assay.manufacturer}</td>
+                            <td style={{ color: '#6b7280' }}>{assay.installDate}</td>
+                            <td style={{ textAlign: 'center' }}>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleDeleteAssay(assay.id);
+                                }}
+                                style={{
+                                  background: '#fee2e2',
+                                  color: '#dc2626',
+                                  border: 'none',
+                                  padding: '6px 12px',
+                                  borderRadius: '6px',
+                                  cursor: 'pointer',
+                                  fontSize: '12px',
+                                  fontWeight: '500',
+                                  transition: 'all 0.2s'
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.target.style.background = '#fecaca';
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.target.style.background = '#fee2e2';
+                                }}
+                              >
+                                🗑️ 삭제
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    {settings.assayList.filter(a => {
+                      const search = settings.assaySearch.toLowerCase();
+                      return a.name.toLowerCase().includes(search) ||
+                             a.manufacturer.toLowerCase().includes(search) ||
+                             a.version.toLowerCase().includes(search);
+                    }).length === 0 && (
+                      <div className="empty-state" style={{
+                        padding: '40px',
+                        textAlign: 'center',
+                        color: '#9ca3af'
+                      }}>
+                        <div style={{ fontSize: '48px', marginBottom: '10px' }}>🔍</div>
+                        <p>검색 결과가 없습니다.</p>
+                      </div>
+                    )}
                   </div>
-                </div>
+                </>
               )}
             </div>
 
@@ -3121,6 +3363,129 @@ export default function SettingsPopup() {
               <div className="alert-buttons">
                 <button className="btn btn-secondary" onClick={handleCancelAnalysisTabClose}>취소</button>
                 <button className="btn btn-primary" onClick={handleConfirmAnalysisTabClose}>확인 후 저장</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Add Assay Pack Modal */}
+        {settings.showAddAssayModal && (
+          <div className="alert-overlay">
+            <div className="alert-modal" style={{ maxWidth: '500px' }}>
+              <h3 style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span>🧬</span> Assay Pack 추가
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', fontSize: '14px' }}>
+                    Assay Name <span style={{ color: '#ef4444' }}>*</span>
+                  </label>
+                  <input 
+                    type="text"
+                    placeholder="예: Allplex SARS-CoV-2"
+                    value={settings.newAssay.name}
+                    onChange={(e) => updateNewAssay('name', e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '10px',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '6px',
+                      fontSize: '14px'
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', fontSize: '14px' }}>
+                    Intended Use <span style={{ color: '#ef4444' }}>*</span>
+                  </label>
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    {['IVD', 'RUO', 'LDT'].map(opt => (
+                      <div 
+                        key={opt}
+                        className={`radio-item ${settings.newAssay.intendedUse === opt ? 'selected' : ''}`}
+                        onClick={() => updateNewAssay('intendedUse', opt)}
+                        style={{ flex: 1, textAlign: 'center' }}
+                      >
+                        <div className="radio-dot" />
+                        {opt}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', gap: '15px' }}>
+                  <div style={{ flex: 1 }}>
+                    <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', fontSize: '14px' }}>
+                      Version <span style={{ color: '#ef4444' }}>*</span>
+                    </label>
+                    <input 
+                      type="text"
+                      placeholder="예: 1.0.0"
+                      value={settings.newAssay.version}
+                      onChange={(e) => updateNewAssay('version', e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '10px',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '6px',
+                        fontSize: '14px'
+                      }}
+                    />
+                  </div>
+
+                  <div style={{ flex: 1 }}>
+                    <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', fontSize: '14px' }}>
+                      Install Date <span style={{ color: '#ef4444' }}>*</span>
+                    </label>
+                    <input 
+                      type="date"
+                      value={settings.newAssay.installDate}
+                      onChange={(e) => updateNewAssay('installDate', e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '10px',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '6px',
+                        fontSize: '14px'
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', fontSize: '14px' }}>
+                    제조사 <span style={{ color: '#ef4444' }}>*</span>
+                  </label>
+                  <input 
+                    type="text"
+                    placeholder="예: Seegene"
+                    value={settings.newAssay.manufacturer}
+                    onChange={(e) => updateNewAssay('manufacturer', e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '10px',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '6px',
+                      fontSize: '14px'
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div className="alert-buttons" style={{ marginTop: '25px' }}>
+                <button 
+                  className="btn btn-secondary" 
+                  onClick={() => updateSetting('showAddAssayModal', false)}
+                >
+                  취소
+                </button>
+                <button 
+                  className="btn btn-primary" 
+                  onClick={handleAddAssay}
+                >
+                  추가
+                </button>
               </div>
             </div>
           </div>
