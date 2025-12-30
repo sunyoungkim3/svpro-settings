@@ -2635,7 +2635,10 @@ export default function SettingsPopup() {
                   </div>
 
                   <div className="setting-row">
-                    <div className="setting-label">Sample to Export</div>
+                    <div className="setting-label">
+                      Sample to Export
+                      <small>If "All Samples" is selected, all samples will be exported even if you select specific samples in the Result Table</small>
+                    </div>
                     <div className="setting-control">
                       <div className="radio-group">
                         {['All Samples', 'Selected Sample(s)'].map(opt => (
@@ -2869,7 +2872,10 @@ export default function SettingsPopup() {
                   </div>
 
                   <div className="setting-row">
-                    <div className="setting-label">Sample to Export</div>
+                    <div className="setting-label">
+                      Sample to Export
+                      <small>If "All Samples" is selected, all samples will be exported even if you select specific samples in the Result Table</small>
+                    </div>
                     <div className="setting-control">
                       <div className="radio-group">
                         {['All Samples', 'Selected Sample(s)'].map(opt => (
@@ -3099,7 +3105,10 @@ export default function SettingsPopup() {
               {activeTab === 'print' && (
                 <>
                   <div className="setting-row">
-                    <div className="setting-label">Print Range</div>
+                    <div className="setting-label">
+                      Print Range
+                      <small>If "All Samples" is selected, all samples will be printed even if you select specific samples in the Result Table</small>
+                    </div>
                     <div className="setting-control">
                       <div className="radio-group">
                         {['All Samples', 'Selected Sample(s)'].map(opt => (
