@@ -79,6 +79,7 @@ export default function SettingsPopup() {
     hl7Version: '2.5.1',
     hl7TransferItems: { result: true, ctValue: true, meltTemp: false },
     hl7SdInvalid: false,
+    hl7AutoSend: false,
     hl7SampleToExport: 'All Samples',
     hl7TransferProtocol: 'HTTP',
     hl7ServerIP: '',
@@ -2856,6 +2857,14 @@ export default function SettingsPopup() {
                     <div className="setting-control">
                       <div className={`toggle ${settings.hl7SdInvalid ? 'active' : ''}`} onClick={() => updateSetting('hl7SdInvalid', !settings.hl7SdInvalid)} />
                       <span className="toggle-label">{settings.hl7SdInvalid ? 'ON' : 'OFF'}</span>
+                    </div>
+                  </div>
+
+                  <div className="setting-row">
+                    <div className="setting-label">Auto Send</div>
+                    <div className="setting-control">
+                      <div className={`toggle ${settings.hl7AutoSend ? 'active' : ''}`} onClick={() => updateSetting('hl7AutoSend', !settings.hl7AutoSend)} />
+                      <span className="toggle-label">{settings.hl7AutoSend ? 'ON' : 'OFF'}</span>
                     </div>
                   </div>
 
