@@ -9,8 +9,8 @@ export default function SettingsPopup() {
   
   // 분석 탭에 영향을 주는 설정의 초기값 저장
   const initialCriticalSettings = useRef({
-    pcrRawDataType: '',
-    sampleId: 'plrn',
+    pcrRawDataType: 'type1', // 디폴트값: type1
+    sampleId: '', // 조건부 필수 (plrn/barcode 선택 시)
     resultView: 'Simple',
     ctValueDigit: 'Two Decimal Digit',
     sampleIndexSetting: 'enable',
@@ -28,9 +28,9 @@ export default function SettingsPopup() {
     autoBackupPath: 'C:\\SV Pro\\Backups\\Auto',
     scheduledBackupPath: 'C:\\SV Pro\\Backups\\Scheduled',
     keepRecentCount: 10,
-    scheduledInterval: 'daily', // 'daily', 'weekly', 'monthly'
-    scheduledWeekday: '', // weekly일 때 요일 선택 (디폴트값 없음)
-    scheduledMonthDay: '', // monthly일 때 날짜 선택 (1-31, 디폴트값 없음)
+    scheduledInterval: 'daily', // 디폴트: daily (첫 번째 옵션)
+    scheduledWeekday: '', // weekly일 때 요일 선택 (조건부 필수)
+    scheduledMonthDay: '', // monthly일 때 날짜 선택 (1-31, 조건부 필수)
     lastBackupTime: null,
     lastAutoBackupTime: null,
     lastScheduledBackupTime: null,
@@ -48,6 +48,7 @@ export default function SettingsPopup() {
   const [showDiffConfirmModal, setShowDiffConfirmModal] = useState(false);
   const [importDiffData, setImportDiffData] = useState(null);
   const [importFileName, setImportFileName] = useState('');
+  const [lastImportedFileName, setLastImportedFileName] = useState(''); // 마지막으로 적용한 파일명 추적
   const [importedSettingsData, setImportedSettingsData] = useState(null); // 원본 imported settings 저장
   const [pendingImport, setPendingImport] = useState(null); // Save 대기 중인 import 정보
   const [showExportSuccess, setShowExportSuccess] = useState(false);
@@ -58,11 +59,11 @@ export default function SettingsPopup() {
   const [userPermission, setUserPermission] = useState('master'); // 'user', 'admin', 'master'
 
   const [settings, setSettings] = useState({
-    // General
-    language: '',
-    pcrRawDataType: '',
-    csvHeaderSettings: '', // CSV 포맷 && 특정 언어 선택 시 사용자가 반드시 선택
-    // 다중 선택 가능한 데이터 불러오기 방식
+    // General - 디폴트값: 첫 번째 옵션
+    language: 'ko', // 디폴트: 한국어
+    pcrRawDataType: 'type1', // 디폴트: Type 1
+    csvHeaderSettings: '', // CSV 포맷 && 특정 언어 선택 시 사용자가 반드시 선택 (조건부 필수)
+    // 다중 선택 가능한 데이터 불러오기 방식 - 디폴트: Manual 선택
     loadingMethods: {
       manual: true,
       preset: false,
@@ -72,54 +73,54 @@ export default function SettingsPopup() {
     },
     plateBarcode: false,
     plateSettingFile: 'None',
-    csvFileOpenOption: '', // (디폴트값 없음 - CSV 선택 시 필수)
-    plateSetting: { manual: false, preset: false }, // (디폴트값 없음 - CSV 선택 시 필수)
-    sampleId: '', // (디폴트값 없음 - plrn 또는 barcode 선택 시 필수)
+    csvFileOpenOption: '', // (디폴트값 없음 - CSV 선택 시 조건부 필수)
+    plateSetting: { manual: false, preset: false }, // (디폴트값 없음 - CSV 선택 시 조건부 필수)
+    sampleId: '', // (디폴트값 없음 - plrn 또는 barcode 선택 시 조건부 필수)
     targetAbbreviation: false,
     openPcrDataFileFolderPath: '',
     openLimsFileFolderPath: '',
     exportFolderPath: '',
     saveFolderPath: '',
     saveWorkListFolderPath: '',
-    // Display Setting
-    resultView: 'Simple',
-    wellTable: '세로',
-    resultDisplay: 'Plain Text',
-    ctValueDigit: 'Two Decimal Digit',
-    sampleIndexSetting: 'enable',
+    // Display Setting - 디폴트값: 첫 번째 옵션
+    resultView: 'Simple', // 디폴트: Simple
+    wellTable: '세로', // 디폴트: 세로
+    resultDisplay: 'Plain Text', // 디폴트: Plain Text
+    ctValueDigit: 'Two Decimal Digit', // 디폴트: Two Decimal Digit
+    sampleIndexSetting: 'enable', // 디폴트: enable
     displayPositiveWhenICNegative: false,
     invalidateWhenPCNCInvalid: false,
-    // Export - LIS Export Setting
+    // Export - LIS Export Setting - 디폴트값: 첫 번째 옵션
     autoExport: false,
-    sampleToExport: 'All Samples',
-    exportFormat: 'xlsx',
-    targetAlignmentMethod: '세로',
+    sampleToExport: 'All Samples', // 디폴트: All Samples
+    exportFormat: 'xlsx', // 디폴트: xlsx
+    targetAlignmentMethod: '세로', // 디폴트: 세로
     meltTemperatureColumn: false,
     // Export - Auto Save Filename
     useRawDataFilename: true,
     usePrefix: false,
-    prefixType: '', // 사용자가 반드시 선택하도록 비워둠
+    prefixType: '', // (디폴트값 없음 - usePrefix가 true일 때 조건부 필수)
     createNewFolder: false,
-    folderNameType: '', // 사용자가 반드시 선택하도록 비워둠
-    // Print
-    printRange: 'All Samples',
+    folderNameType: '', // (디폴트값 없음 - createNewFolder가 true일 때 조건부 필수)
+    // Print - 디폴트값: 첫 번째 옵션
+    printRange: 'All Samples', // 디폴트: All Samples
     printItems: { number: true, sampleId: true },
     logoFile: '',
     addLogoToPrint: false,
-    logoPrintLocation: '', // 사용자가 반드시 선택하도록 비워둠 (addLogoToPrint가 true일 때 필수)
+    logoPrintLocation: '', // (디폴트값 없음 - addLogoToPrint가 true일 때 조건부 필수)
     watermarkFile: '',
     addWatermarkToPrint: false,
-    watermarkLayout: '', // 사용자가 반드시 선택하도록 비워둠 (addWatermarkToPrint가 true일 때 필수)
-    // HL7 Setting
-    hl7Version: '2.5.1',
+    watermarkLayout: '', // (디폴트값 없음 - addWatermarkToPrint가 true일 때 조건부 필수)
+    // HL7 Setting - 디폴트값: 첫 번째 옵션
+    hl7Version: '2.5.1', // 디폴트: 2.5.1
     hl7TransferItems: { result: true, ctValue: true, meltTemp: false },
     hl7SdInvalid: false,
     hl7AutoSend: false,
-    hl7SampleToExport: 'All Samples',
-    hl7TransferProtocol: 'HTTP',
+    hl7SampleToExport: 'All Samples', // 디폴트: All Samples
+    hl7TransferProtocol: 'HTTP', // 디폴트: HTTP
     hl7ServerIP: '',
     hl7ServerPort: '',
-    hl7TransferMethod: 'all-at-once',
+    hl7TransferMethod: 'all-at-once', // 디폴트: all-at-once
     hl7ResponseTimeout: '30000',
     hl7AbbrevAssaySearch: '',
     hl7AbbrevSelectedAssay: null,
@@ -312,22 +313,9 @@ export default function SettingsPopup() {
   };
 
   const handleSave = () => {
-    // === 필수 항목 검증 (조건부 노출 항목 제외) ===
+    // === 조건부 필수 항목 검증 (디폴트값이 없는 조건부 노출 항목만) ===
     
-    // General 탭 - 필수 항목
-    if (!settings.language || settings.language === '') {
-      alert('⚠️ Language를 선택해주세요.');
-      setActiveTab('general');
-      return;
-    }
-    
-    if (!settings.pcrRawDataType || settings.pcrRawDataType === '') {
-      alert('⚠️ PCR Raw Data Type을 선택해주세요.');
-      setActiveTab('general');
-      return;
-    }
-    
-    // Loading Methods - 최소 1개 선택 필수
+    // Loading Methods - 최소 1개 선택 필수 (디폴트로 Manual 선택되어 있음)
     if (!Object.values(settings.loadingMethods).some(v => v)) {
       alert('⚠️ Data Loading Methods를 최소 하나 이상 선택해주세요.');
       setActiveTab('general');
@@ -860,10 +848,21 @@ export default function SettingsPopup() {
     }
   };
 
-  // Import 파일 선택
+  // Restore/Import 파일 선택
+  // 두 가지 방법으로 호출됨:
+  // 1. Backup File List에서 "복원" 버튼 클릭 (백업 파일 목록에서 선택)
+  // 2. Restore 영역에서 "Import" 버튼 클릭 (파일 탐색기로 직접 선택)
   const handleImportFile = (event) => {
     const file = event.target.files[0];
     if (!file) return;
+
+    // 중복 파일 확인
+    if (file.name === lastImportedFileName) {
+      alert('⚠️ 이미 적용된 파일입니다.\n다른 파일을 선택해주세요.');
+      // 파일 input 초기화 (같은 파일을 다시 선택할 수 있도록)
+      event.target.value = '';
+      return;
+    }
 
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -876,12 +875,13 @@ export default function SettingsPopup() {
           return;
         }
 
-        // Diff 생성
+        // Diff 생성 (변경사항이 없어도 항상 Diff 모달 표시)
         const diffData = generateDiffData(settings, importedData.settings);
         
         setImportDiffData(diffData);
         setImportedSettingsData(importedData.settings); // 원본 저장
         setImportFileName(file.name);
+        // 변경사항 유무와 관계없이 항상 Diff 확인 모달 표시
         setShowDiffConfirmModal(true);
 
       } catch (error) {
@@ -990,6 +990,9 @@ export default function SettingsPopup() {
       // Settings state 업데이트 (임시 적용)
       setSettings(newSettings);
       setHasUnsavedChanges(true);
+
+      // 마지막으로 적용한 파일명 저장 (중복 체크용)
+      setLastImportedFileName(importFileName);
 
       // Save 시 Hub 로그 전송을 위한 정보 저장
       setPendingImport({
@@ -2474,7 +2477,6 @@ export default function SettingsPopup() {
                     <div className="setting-label">Language</div>
                     <div className="setting-control">
                       <select value={settings.language} onChange={(e) => updateSetting('language', e.target.value)}>
-                        <option value="">선택하세요</option>
                         <option value="ko">한국어</option>
                         <option value="en">English</option>
                         <option value="et">Estonian</option>
@@ -2499,7 +2501,6 @@ export default function SettingsPopup() {
                     </div>
                     <div className="setting-control">
                       <select value={settings.pcrRawDataType} onChange={(e) => updateSetting('pcrRawDataType', e.target.value)}>
-                        <option value="">선택하세요</option>
                         <option value="type1">Type 1</option>
                         <option value="type2">Type 2</option>
                       </select>
@@ -4351,7 +4352,12 @@ export default function SettingsPopup() {
                                 <button 
                                   className="btn btn-secondary"
                                   style={{ fontSize: '12px', padding: '6px 12px' }}
-                                  onClick={() => console.log('Restore:', file.name)}
+                                  onClick={() => {
+                                    // 방법 1: Backup File List에서 복원
+                                    // 백업 파일의 내용을 직접 로드하여 Import 프로세스 실행
+                                    console.log('Restore from backup list:', file.name);
+                                    // 실제 구현 시: 백업 파일을 읽어서 handleImportFile과 동일한 로직 실행
+                                  }}
                                 >
                                   복원
                                 </button>
