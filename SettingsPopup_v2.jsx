@@ -312,7 +312,31 @@ export default function SettingsPopup() {
   };
 
   const handleSave = () => {
-    // General 탭 - CSV Header Settings 유효성 검사
+    // === 필수 항목 검증 (조건부 노출 항목 제외) ===
+    
+    // General 탭 - 필수 항목
+    if (!settings.language || settings.language === '') {
+      alert('⚠️ Language를 선택해주세요.');
+      setActiveTab('general');
+      return;
+    }
+    
+    if (!settings.pcrRawDataType || settings.pcrRawDataType === '') {
+      alert('⚠️ PCR Raw Data Type을 선택해주세요.');
+      setActiveTab('general');
+      return;
+    }
+    
+    // Loading Methods - 최소 1개 선택 필수
+    if (!Object.values(settings.loadingMethods).some(v => v)) {
+      alert('⚠️ Data Loading Methods를 최소 하나 이상 선택해주세요.');
+      setActiveTab('general');
+      return;
+    }
+
+    // === 조건부 필수 항목 검증 ===
+    
+    // General 탭 - CSV Header Settings (조건부)
     if (settings.exportFormat === 'csv' && 
         ['et', 'fr', 'de', 'it', 'lv', 'lt', 'pt', 'es', 'tr'].includes(settings.language) && 
         settings.csvHeaderSettings === '') {
@@ -321,28 +345,102 @@ export default function SettingsPopup() {
       return;
     }
 
-    // General 탭 - Sample ID 유효성 검사
+    // General 탭 - Sample ID (조건부)
     if ((settings.loadingMethods.plrn || settings.loadingMethods.barcode) && settings.sampleId === '') {
       alert('⚠️ LIMS(.plrn) 또는 바코드로 불러오기가 선택되어 있습니다.\nSample ID를 선택해주세요.');
       setActiveTab('general');
       return;
     }
 
-    // General 탭 - Plate Setting 유효성 검사
+    // General 탭 - Plate Setting (조건부)
     if (settings.loadingMethods.csv && !settings.plateSetting.manual && !settings.plateSetting.preset) {
       alert('⚠️ CSV 불러오기가 선택되어 있습니다.\nPlate Setting (Manual 또는 Preset 중 최소 하나)을 선택해주세요.');
       setActiveTab('general');
       return;
     }
 
-    // General 탭 - CSV File Open Option 유효성 검사
+    // General 탭 - CSV File Open Option (조건부)
     if (settings.loadingMethods.csv && settings.csvFileOpenOption === '') {
       alert('⚠️ CSV 불러오기가 선택되어 있습니다.\nCSV File Open Option을 선택해주세요.');
       setActiveTab('general');
       return;
     }
 
-    // Export 탭 - Prefix/Folder 유효성 검사
+    // Display 탭 - 필수 항목
+    if (!settings.resultView || settings.resultView === '') {
+      alert('⚠️ Result View를 선택해주세요.');
+      setActiveTab('display');
+      return;
+    }
+    
+    if (!settings.wellTable || settings.wellTable === '') {
+      alert('⚠️ Well Table을 선택해주세요.');
+      setActiveTab('display');
+      return;
+    }
+    
+    if (!settings.resultDisplay || settings.resultDisplay === '') {
+      alert('⚠️ Result Display를 선택해주세요.');
+      setActiveTab('display');
+      return;
+    }
+    
+    if (!settings.ctValueDigit || settings.ctValueDigit === '') {
+      alert('⚠️ C(t) Value Digit을 선택해주세요.');
+      setActiveTab('display');
+      return;
+    }
+    
+    if (!settings.sampleIndexSetting || settings.sampleIndexSetting === '') {
+      alert('⚠️ Sample Index Setting을 선택해주세요.');
+      setActiveTab('display');
+      return;
+    }
+
+    // Export 탭 - 필수 항목
+    if (!settings.sampleToExport || settings.sampleToExport === '') {
+      alert('⚠️ Sample to Export를 선택해주세요.');
+      setActiveTab('export');
+      return;
+    }
+    
+    if (!settings.exportFormat || settings.exportFormat === '') {
+      alert('⚠️ Export Format을 선택해주세요.');
+      setActiveTab('export');
+      return;
+    }
+    
+    if (!settings.targetAlignmentMethod || settings.targetAlignmentMethod === '') {
+      alert('⚠️ Target Alignment Method를 선택해주세요.');
+      setActiveTab('export');
+      return;
+    }
+    
+    if (!settings.hl7Version || settings.hl7Version === '') {
+      alert('⚠️ HL7 Version을 선택해주세요.');
+      setActiveTab('export');
+      return;
+    }
+    
+    if (!settings.hl7SampleToExport || settings.hl7SampleToExport === '') {
+      alert('⚠️ HL7 Sample to Export를 선택해주세요.');
+      setActiveTab('export');
+      return;
+    }
+    
+    if (!settings.hl7TransferProtocol || settings.hl7TransferProtocol === '') {
+      alert('⚠️ HL7 Transfer Protocol을 선택해주세요.');
+      setActiveTab('export');
+      return;
+    }
+    
+    if (!settings.hl7TransferMethod || settings.hl7TransferMethod === '') {
+      alert('⚠️ HL7 Transfer Method를 선택해주세요.');
+      setActiveTab('export');
+      return;
+    }
+
+    // Export 탭 - Prefix/Folder 조건부 필수
     if (settings.usePrefix && settings.prefixType === '') {
       alert('⚠️ Use Prefix가 활성화되어 있습니다.\nPrefix Type을 선택해주세요.');
       setActiveTab('export');
@@ -354,7 +452,14 @@ export default function SettingsPopup() {
       return;
     }
 
-    // Print 탭 - Logo/Watermark 유효성 검사
+    // Print 탭 - 필수 항목
+    if (!settings.printRange || settings.printRange === '') {
+      alert('⚠️ Print Range를 선택해주세요.');
+      setActiveTab('print');
+      return;
+    }
+
+    // Print 탭 - Logo/Watermark 조건부 필수
     if (settings.addLogoToPrint && settings.logoPrintLocation === '') {
       alert('⚠️ Add Logo to Print가 활성화되어 있습니다.\nLogo Print Location을 선택해주세요.');
       setActiveTab('print');
@@ -366,7 +471,14 @@ export default function SettingsPopup() {
       return;
     }
 
-    // Backup/Restore 탭 - Scheduled Backup 유효성 검사
+    // Backup/Restore 탭 - 필수 항목
+    if (!backupSettings.scheduledInterval || backupSettings.scheduledInterval === '') {
+      alert('⚠️ Scheduled Interval을 선택해주세요.');
+      setActiveTab('backup');
+      return;
+    }
+
+    // Backup/Restore 탭 - Scheduled Backup 조건부 필수
     if (backupSettings.scheduledInterval === 'weekly' && backupSettings.scheduledWeekday === '') {
       alert('⚠️ Scheduled Backup이 Weekly로 설정되어 있습니다.\n백업 요일을 선택해주세요.');
       setActiveTab('backup');
@@ -401,7 +513,7 @@ export default function SettingsPopup() {
     setTargetOnOffChanged(false);
     setHasUnsavedChanges(false);
     setShowSaveSuccess(true);
-    setTimeout(() => setShowSaveSuccess(false), 2000);
+    // 자동 사라짐 제거 - 사용자가 수동으로 닫아야 함
     
     // Import가 적용되었으면 Hub 로그 전송
     if (pendingImport) {
@@ -579,7 +691,7 @@ export default function SettingsPopup() {
           // 성공 메시지
           setExportMessage(`설정 파일이 성공적으로 저장되었습니다.\n파일명: ${fileName}`);
           setShowExportSuccess(true);
-          setTimeout(() => setShowExportSuccess(false), 3000);
+          // 자동 사라짐 제거 - 사용자가 수동으로 닫아야 함
 
           // Hub 로그 전송 (실제 구현 시)
           console.log('Export event logged:', {
@@ -616,7 +728,7 @@ export default function SettingsPopup() {
         // 성공 메시지
         setExportMessage(`설정 파일이 성공적으로 내보내졌습니다.\n파일명: ${fileName}`);
         setShowExportSuccess(true);
-        setTimeout(() => setShowExportSuccess(false), 3000);
+        // 자동 사라짐 제거 - 사용자가 수동으로 닫아야 함
 
         // Hub 로그 전송 (실제 구현 시)
         console.log('Export event logged:', {

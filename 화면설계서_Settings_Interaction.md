@@ -597,13 +597,13 @@ Add Watermark to Print: [ON]
 | 변경 없음 | Footer | (메시지 없음) | - |
 | 변경됨 | Footer | ● 저장되지 않은 변경사항 | 계속 표시 |
 | 저장 중 | Footer | (미정) | 저장 완료 시까지 |
-| 저장 완료 | Footer | ✓ 설정 변경이 완료되었습니다 | 2초 |
+| 저장 완료 | Footer | ✓ 설정 변경이 완료되었습니다 | 사용자 확인 시까지 (수동 닫기) |
 
 ### 9.2 백업 상태
 
 | 동작 | 표시 메시지 | 지속 시간 |
 |------|-------------|-----------|
-| Manual Export 성공 | ✅ 설정 파일이 성공적으로 저장되었습니다<br/>파일명: [파일명] | 3초 |
+| Manual Export 성공 | ✅ 설정 파일이 성공적으로 저장되었습니다<br/>파일명: [파일명] | 사용자 확인 시까지 (수동 닫기) |
 | Import 성공 | ✅ Import 성공!<br/>N개 항목이 변경되었습니다.<br/>저장 버튼을 눌러 적용하세요. | 사용자 확인 시까지 |
 | Export 실패 | ❌ 설정 내보내기 중 오류가 발생했습니다:<br/>[오류 메시지] | 사용자 확인 시까지 |
 | Import 실패 | ❌ 파일을 가져올 수 없습니다:<br/>[오류 메시지] | 사용자 확인 시까지 |
@@ -626,23 +626,54 @@ Add Watermark to Print: [ON]
 
 **시점**: 저장 버튼 클릭 시
 
-**필수 항목** (예시):
-- General 탭:
-  - Language
-  - PCR Raw Data Type
-  - Data Loading Methods (최소 1개)
-  - Sample ID
-- Display Setting 탭:
-  - Result View
-  - C(t) Value Digit
-- Export 탭:
-  - HL7 Version
-  - Transfer Protocol
-- Print 탭:
-  - Print Range
+**원칙**: 조건부 노출 항목을 제외한 모든 설정 항목은 필수 항목
+
+**필수 항목 목록**:
+
+- **General 탭**:
+  - Language (필수)
+  - PCR Raw Data Type (필수)
+  - Data Loading Methods (최소 1개 필수)
+  - 폴더 경로 설정들 (선택)
+
+- **Display Setting 탭**:
+  - Result View (필수)
+  - Well Table (필수)
+  - Result Display (필수)
+  - C(t) Value Digit (필수)
+  - Sample Index Setting (필수)
+  - Display positive when IC negative (선택 - boolean)
+  - Invalidate when PC/NC invalid (선택 - boolean)
+
+- **Export 탭**:
+  - Sample to Export (필수)
+  - Export Format (필수)
+  - Target Alignment Method (필수)
+  - HL7 Version (필수)
+  - HL7 Sample to Export (필수)
+  - HL7 Transfer Protocol (필수)
+  - HL7 Transfer Method (필수)
+
+- **Print 탭**:
+  - Print Range (필수)
+
+- **Backup/Restore 탭**:
+  - Scheduled Interval (필수)
+
+**조건부 필수 항목** (별도 검증):
+- CSV Header Settings (CSV + 특정 언어)
+- Sample ID (LIMS/Barcode 선택 시)
+- Plate Setting (CSV 선택 시)
+- CSV File Open Option (CSV 선택 시)
+- Prefix Type (Use Prefix ON)
+- Folder Name Type (Create New Folder ON)
+- Logo Print Location (Add Logo ON)
+- Watermark Layout (Add Watermark ON)
+- Scheduled Weekday (Weekly)
+- Scheduled Month Day (Monthly)
 
 **검증 실패 시**:
-1. 경고 팝업 표시
+1. 경고 팝업 표시: "⚠️ [항목명]을/를 선택해주세요."
 2. 해당 탭으로 자동 이동
 3. (가능하면) 해당 필드에 포커스
 
@@ -797,11 +828,13 @@ Add Watermark to Print: [ON]
 
 ### 12.2 자동 사라짐 타이머
 
+**참고**: 모든 성공/오류 메시지는 자동으로 사라지지 않으며, 사용자가 직접 닫기 버튼을 클릭하여 닫아야 합니다.
+
 | 메시지 | 지속 시간 |
 |--------|-----------|
-| 저장 완료 | 2초 |
-| Export 성공 | 3초 |
-| Import 성공 알림 | 사용자 확인 필요 (버튼 클릭) |
+| 저장 완료 | 사용자 확인 필요 (수동 닫기) |
+| Export 성공 | 사용자 확인 필요 (수동 닫기) |
+| Import 성공 알림 | 사용자 확인 필요 (수동 닫기) |
 
 ---
 
