@@ -501,7 +501,10 @@ export default function SettingsPopup() {
     setTargetOnOffChanged(false);
     setHasUnsavedChanges(false);
     setShowSaveSuccess(true);
-    // 자동 사라짐 제거 - 사용자가 수동으로 닫아야 함
+    // 3초 후 자동으로 메시지 사라짐
+    setTimeout(() => {
+      setShowSaveSuccess(false);
+    }, 3000);
     
     // Import가 적용되었으면 Hub 로그 전송
     if (pendingImport) {

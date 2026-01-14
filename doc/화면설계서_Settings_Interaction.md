@@ -337,10 +337,6 @@ Restore는 두 가지 방법으로 수행할 수 있습니다:
 **트리거**: Auto Backup 파일 목록에서 특정 파일의 [복원] 버튼 클릭
 
 **동작 흐름**:
-1. 저장되지 않은 변경사항 확인
-   - 있음 → 경고 팝업 표시 후 중단
-   - 없음 → 진행
-
 2. 선택된 백업 파일 읽기
 
 3. 파일 유효성 검증
@@ -399,7 +395,7 @@ Restore는 두 가지 방법으로 수행할 수 있습니다:
 - **스킵**: 타입 불일치, 존재하지 않는 키 등 → 적용 안 됨
 
 **두 방법의 차이점**:
-- **방법 1 (파일 목록에서 복원)**: Auto Backup으로 생성된 파일 중에서 선택
+- **방법 1 (파일 목록에서 복원)**: Auto Backup/Scheduled Backup 으로 생성된 파일 중에서 선택
 - **방법 2 (Import)**: 사용자가 임의의 위치에 저장된 백업 파일을 직접 선택
 
 ---
@@ -471,13 +467,12 @@ Add Watermark to Print: [ON]
 **저장 시 검증**:
 - 하위 항목이 표시되어 있는데 선택되지 않은 경우
 - 경고 팝업 표시: "⚠️ [항목명]을/를 선택해주세요."
-- 해당 탭으로 자동 이동
+- 해당 탭으로 자동 이동(가능한 경우)
 - 해당 필드에 포커스 (가능한 경우)
 
 **시각적 표현**:
 - 들여쓰기로 계층 관계 표현
 - 선택되지 않은 필수 항목은 플레이스홀더 텍스트 표시 ("선택하세요")
-- 일부 항목은 강조 배경 (예: 노란색)으로 주의 환기
 
 ### 7.3 Target On/Off (Display Setting 서브탭)
 
@@ -563,7 +558,7 @@ Add Watermark to Print: [ON]
 
 **검색**:
 - 상단 검색창으로 필터링
-- 검색 범위: Assay Name, 제조사, Version
+- 검색 범위: Assay Name, 제조사
 
 **추가**:
 1. 우측 상단 [➕ Assay Pack 추가] 버튼 클릭
@@ -618,8 +613,7 @@ Add Watermark to Print: [ON]
 |------|-----------|--------|-----------|
 | 변경 없음 | Footer | (메시지 없음) | - |
 | 변경됨 | Footer | ● 저장되지 않은 변경사항 | 계속 표시 |
-| 저장 중 | Footer | (미정) | 저장 완료 시까지 |
-| 저장 완료 | Footer | ✓ 설정 변경이 완료되었습니다 | 사용자 확인 시까지 (수동 닫기) |
+| 저장 완료 | Footer | ✓ 설정 변경이 완료되었습니다 | 3초 |
 
 ### 9.2 백업 상태
 
@@ -647,40 +641,40 @@ Add Watermark to Print: [ON]
 **시점**: 저장 버튼 클릭 시
 
 **원칙**: 
-- 일반 설정 항목: 드롭다운/라디오 버튼 등은 첫 번째 옵션이 디폴트값으로 자동 선택됨
+- 일반 설정 항목: 드롭다운/라디오 버튼 등은 디폴트값으로 자동 선택됨
 - 조건부 노출 항목만 선택 필수 (디폴트값 없음)
 
 **디폴트값 적용 항목(디폴트 값 미정)**:
 
 - **General 탭**:
-  - Language (디폴트: 첫 번째 옵션)
-  - PCR Raw Data Type (디폴트: 첫 번째 옵션)
+  - Language  
+  - PCR Raw Data Type  
   - Data Loading Methods (디폴트: 첫 번째 옵션 체크)
   - 폴더 경로 설정들 (선택)
 
 - **Display Setting 탭**:
-  - Result View (디폴트: 첫 번째 옵션)
-  - Well Table (디폴트: 첫 번째 옵션)
-  - Result Display (디폴트: 첫 번째 옵션)
-  - C(t) Value Digit (디폴트: 첫 번째 옵션)
-  - Sample Index Setting (디폴트: 첫 번째 옵션)
+  - Result View  
+  - Well Table  
+  - Result Display  
+  - C(t) Value Digit  
+  - Sample Index Setting  
   - Display positive when IC negative (디폴트: false)
   - Invalidate when PC/NC invalid (디폴트: false)
 
 - **Export 탭**:
-  - Sample to Export (디폴트: 첫 번째 옵션)
-  - Export Format (디폴트: 첫 번째 옵션)
-  - Target Alignment Method (디폴트: 첫 번째 옵션)
-  - HL7 Version (디폴트: 첫 번째 옵션)
-  - HL7 Sample to Export (디폴트: 첫 번째 옵션)
-  - HL7 Transfer Protocol (디폴트: 첫 번째 옵션)
-  - HL7 Transfer Method (디폴트: 첫 번째 옵션)
+  - Sample to Export  
+  - Export Format  
+  - Target Alignment Method  
+  - HL7 Version  
+  - HL7 Sample to Export  
+  - HL7 Transfer Protocol  
+  - HL7 Transfer Method  
 
 - **Print 탭**:
-  - Print Range (디폴트: 첫 번째 옵션)
+  - Print Range  
 
 - **Backup/Restore 탭**:
-  - Scheduled Interval (디폴트: 첫 번째 옵션)
+  - Scheduled Interval  
 
 **조건부 필수 항목** (디폴트값 없음, 선택 필수):
 - CSV Header Settings (CSV + 특정 언어)
@@ -810,7 +804,7 @@ Add Watermark to Print: [ON]
 **대상**: Backup 시
 **이유**: Assay Pack은 별도 관리, 설정 파일에 포함 안 함
 
-### 11.3 Hub 로그 전송
+### 11.3 Hub 로그 전송(미정)
 
 **이벤트**:
 - Manual Export 성공
@@ -827,31 +821,6 @@ Add Watermark to Print: [ON]
 
 ---
 
-## 12. 애니메이션 및 전환 효과
-
-### 12.1 필요한 애니메이션
-
-| 요소 | 효과 | 시간 |
-|------|------|------|
-| 모달 팝업 열기/닫기 | Fade in/out + Scale | 0.2s |
-| 탭 전환 | Fade | 0.15s |
-| 서브탭 확장/축소 | Slide down/up | 0.2s |
-| 토글 스위치 | Slide | 0.2s |
-| 버튼 Hover | 배경색 전환 | 0.15s |
-| 성공 메시지 표시/사라짐 | Fade in/out | 0.3s |
-| 테이블 행 Hover | 배경색 전환 | 0.1s |
-
-### 12.2 자동 사라짐 타이머
-
-**참고**: 모든 성공/오류 메시지는 자동으로 사라지지 않으며, 사용자가 직접 닫기 버튼을 클릭하여 닫아야 합니다.
-
-| 메시지 | 지속 시간 |
-|--------|-----------|
-| 저장 완료 | 사용자 확인 필요 (수동 닫기) |
-| Export 성공 | 사용자 확인 필요 (수동 닫기) |
-| Import 성공 알림 | 사용자 확인 필요 (수동 닫기) |
-
----
 
 ## 13. 권한별 설정 항목 접근 제어
 
@@ -960,15 +929,15 @@ Add Watermark to Print: [ON]
     ↓
 사용자 [저장] 클릭
     ↓
-필수 항목 검증 ────→ 실패 → 경고 표시 → 해당 탭으로 이동
+필수 항목 검증 ────→ 실패 → 경고 표시 → 해당 탭으로 이동(옵션)
     ↓ 통과
-비즈니스 규칙 검증 ────→ 실패 → 경고 표시 → 해당 탭으로 이동
+비즈니스 규칙 검증 ────→ 실패 → 경고 표시 → 해당 탭으로 이동(옵션)
     ↓ 통과
 분석 탭 영향 확인 ────→ 있음 → 경고 팝업 표시
     ↓ 없음 또는 확인           ↓
 DB에 저장                 사용자 확인
     ↓                          ↓
-자동 백업 파일 생성          서버에 저장 + 백업
+자동 백업 파일 생성          DB에 저장 + 백업
     ↓                          ↓
 성공 메시지 표시     성공 메시지 표시
     ↓                          ↓
