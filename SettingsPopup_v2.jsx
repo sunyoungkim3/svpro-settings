@@ -864,6 +864,9 @@ export default function SettingsPopup() {
       return;
     }
 
+    // 파일 선택 시점에 파일명 저장 (중복 감지용)
+    setLastImportedFileName(file.name);
+
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
@@ -990,9 +993,6 @@ export default function SettingsPopup() {
       // Settings state 업데이트 (임시 적용)
       setSettings(newSettings);
       setHasUnsavedChanges(true);
-
-      // 마지막으로 적용한 파일명 저장 (중복 체크용)
-      setLastImportedFileName(importFileName);
 
       // Save 시 Hub 로그 전송을 위한 정보 저장
       setPendingImport({
@@ -4441,6 +4441,7 @@ export default function SettingsPopup() {
                           type="file"
                           accept=".json"
                           onChange={handleImportFile}
+                          onClick={(e) => { e.target.value = ''; }}
                           style={{ display: 'none' }}
                           id="import-file-input"
                         />
