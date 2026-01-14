@@ -457,7 +457,7 @@ export default function SettingsPopup() {
         installDate: ''
       }
     }));
-    setHasUnsavedChanges(true);
+    // Assay Pack 추가는 독립적으로 동작하며 저장 버튼에 영향을 주지 않음
   };
 
   const handleDeleteAssay = (assayId) => {
@@ -467,7 +467,7 @@ export default function SettingsPopup() {
         assayList: prev.assayList.filter(a => a.id !== assayId),
         selectedAssay: prev.selectedAssay === assayId ? null : prev.selectedAssay
       }));
-      setHasUnsavedChanges(true);
+      // Assay Pack 삭제는 독립적으로 동작하며 저장 버튼에 영향을 주지 않음
     }
   };
 
