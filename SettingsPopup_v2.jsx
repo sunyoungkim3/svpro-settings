@@ -48,7 +48,6 @@ export default function SettingsPopup() {
   const [showDiffConfirmModal, setShowDiffConfirmModal] = useState(false);
   const [importDiffData, setImportDiffData] = useState(null);
   const [importFileName, setImportFileName] = useState('');
-  const [lastImportedFileName, setLastImportedFileName] = useState(''); // 마지막으로 적용한 파일명 추적
   const [importedSettingsData, setImportedSettingsData] = useState(null); // 원본 imported settings 저장
   const [pendingImport, setPendingImport] = useState(null); // Save 대기 중인 import 정보
   const [showExportSuccess, setShowExportSuccess] = useState(false);
@@ -859,17 +858,6 @@ export default function SettingsPopup() {
     const file = event.target.files[0];
     if (!file) return;
 
-    // 중복 파일 확인
-    if (file.name === lastImportedFileName) {
-      alert('⚠️ 이미 적용된 파일입니다.\n다른 파일을 선택해주세요.');
-      // 파일 input 초기화 (같은 파일을 다시 선택할 수 있도록)
-      event.target.value = '';
-      return;
-    }
-
-    // 파일 선택 시점에 파일명 저장 (중복 감지용)
-    setLastImportedFileName(file.name);
-
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
@@ -881,13 +869,27 @@ export default function SettingsPopup() {
           return;
         }
 
-        // Diff 생성 (변경사항이 없어도 항상 Diff 모달 표시)
+        // Diff 생성 ("동일" 상태 제외, "변경"과 "스킵"만 포함)
         const diffData = generateDiffData(settings, importedData.settings);
         
-        setImportDiffData(diffData);
+        // 변경 또는 스킵 항목만 필터링
+        const filteredDiffData = diffData.filter(diff => 
+          diff.status === 'changed' || 
+          diff.status === 'type_mismatch' || 
+          diff.status === 'new_key'
+        );
+        
+        // 변경할 항목이 없는 경우 (모두 동일한 경우)
+        if (filteredDiffData.length === 0) {
+          alert('동일한 설정 내용입니다.');
+          // 파일 input 초기화
+          event.target.value = '';
+          return;
+        }
+        
+        setImportDiffData(filteredDiffData);
         setImportedSettingsData(importedData.settings); // 원본 저장
         setImportFileName(file.name);
-        // 변경사항 유무와 관계없이 항상 Diff 확인 모달 표시
         setShowDiffConfirmModal(true);
 
       } catch (error) {
@@ -895,6 +897,9 @@ export default function SettingsPopup() {
       }
     };
     reader.readAsText(file);
+    
+    // 파일 input 초기화 (같은 파일을 다시 선택할 수 있도록)
+    event.target.value = '';
   };
 
   // Diff 데이터 생성
