@@ -43,7 +43,7 @@ export default function SettingsPopup() {
       { name: '2026-01-12T09-30_settings_auto.json', date: '2026-01-12T09:30:00Z', size: '23KB' },
       { name: '2026-01-11T14-20_settings_auto.json', date: '2026-01-11T14:20:00Z', size: '23KB' },
     ],
-    scheduledBackupFile: { name: 'settings_scheduled_latest.json', date: '2026-01-13T09:00:00Z', size: '24KB' }
+    scheduledBackupFile: { name: '2026-01-13T09-00_settings_scheduled.json', date: '2026-01-13T09:00:00Z', size: '24KB' }
   });
   const [showDiffConfirmModal, setShowDiffConfirmModal] = useState(false);
   const [importDiffData, setImportDiffData] = useState(null);
@@ -794,8 +794,8 @@ export default function SettingsPopup() {
   // Scheduled Backup (스케줄러가 자동으로 호출)
   const handleScheduledBackup = async () => {
     try {
-      const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
-      const fileName = `settings_scheduled_${timestamp}.json`;
+      const timestamp = new Date().toISOString().replace(/:/g, '-').slice(0, 16);
+      const fileName = `${timestamp}_settings_scheduled.json`;
       
       // Assay Pack 제외 및 민감정보 마스킹
       const filteredSettings = filterSettingsForBackup(settings);
