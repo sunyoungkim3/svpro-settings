@@ -36,12 +36,12 @@ export default function SettingsPopup() {
     lastScheduledBackupTime: null,
     // 백업 파일 목록 (샘플 데이터 - 실제로는 서버에서 불러옴)
     autoBackupFiles: [
-      { name: 'settings_auto_2026-01-13T15-30-00.json', date: '2026-01-13T15:30:00Z', size: '24KB' },
-      { name: 'settings_auto_2026-01-13T14-45-00.json', date: '2026-01-13T14:45:00Z', size: '24KB' },
-      { name: 'settings_auto_2026-01-13T10-20-00.json', date: '2026-01-13T10:20:00Z', size: '24KB' },
-      { name: 'settings_auto_2026-01-12T16-15-00.json', date: '2026-01-12T16:15:00Z', size: '23KB' },
-      { name: 'settings_auto_2026-01-12T09-30-00.json', date: '2026-01-12T09:30:00Z', size: '23KB' },
-      { name: 'settings_auto_2026-01-11T14-20-00.json', date: '2026-01-11T14:20:00Z', size: '23KB' },
+      { name: '2026-01-13T15-30_settings_auto.json', date: '2026-01-13T15:30:00Z', size: '24KB' },
+      { name: '2026-01-13T14-45_settings_auto.json', date: '2026-01-13T14:45:00Z', size: '24KB' },
+      { name: '2026-01-13T10-20_settings_auto.json', date: '2026-01-13T10:20:00Z', size: '24KB' },
+      { name: '2026-01-12T16-15_settings_auto.json', date: '2026-01-12T16:15:00Z', size: '23KB' },
+      { name: '2026-01-12T09-30_settings_auto.json', date: '2026-01-12T09:30:00Z', size: '23KB' },
+      { name: '2026-01-11T14-20_settings_auto.json', date: '2026-01-11T14:20:00Z', size: '23KB' },
     ],
     scheduledBackupFile: { name: 'settings_scheduled_latest.json', date: '2026-01-13T09:00:00Z', size: '24KB' }
   });
@@ -737,8 +737,8 @@ export default function SettingsPopup() {
   // Auto Export on Save (Save 함수에서 호출)
   const handleAutoExportOnSave = async () => {
     try {
-      const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
-      const fileName = `settings_auto_${timestamp}.json`;
+      const timestamp = new Date().toISOString().replace(/:/g, '-').slice(0, 16);
+      const fileName = `${timestamp}_settings_auto.json`;
       
       // Assay Pack 제외 및 민감정보 마스킹
       const filteredSettings = filterSettingsForBackup(settings);

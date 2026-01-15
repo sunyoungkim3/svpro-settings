@@ -319,7 +319,7 @@ Assay Name: [선택된 Assay 이름]
 
 **동작**:
 1. 백업 파일 생성
-   - 파일명: `settings_auto_[timestamp].json`
+   - 파일명: `[timestamp]_settings_auto.json` (예: `2026-01-13T15-30_settings_auto.json`)
    - 저장 위치: 설정된 Auto Backup 경로
    - 내용: Assay Pack 제외, 민감정보 마스킹
 2. 백업 파일 목록에 추가
