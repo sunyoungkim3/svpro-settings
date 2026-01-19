@@ -2759,11 +2759,10 @@ export default function SettingsPopup() {
                             </div>
                           </div>
                           {/* Name 옵션 */}
-                          {!settings.gdprMode && (
                           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                             <span style={{ minWidth: '80px', fontWeight: 500, color: '#374151' }}>Name:</span>
                             <div className="radio-group" style={{ flex: 1 }}>
-                              {['No', 'Sample Id', 'Name'].map(opt => (
+                              {['No', 'Sample Id', 'Name'].filter(opt => !settings.gdprMode || opt !== 'Name').map(opt => (
                                 <div 
                                   key={opt} 
                                   className={`radio-item ${settings.plrnFileOpenOption.name === opt ? 'selected' : ''}`} 
@@ -2775,7 +2774,6 @@ export default function SettingsPopup() {
                               ))}
                             </div>
                           </div>
-                          )}
                         </div>
                       </div>
                     </div>
