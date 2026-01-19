@@ -1073,13 +1073,549 @@ Diff 모달 표시
 
 ---
 
-## 16. 변경 이력
+## 16. 테스트 항목
+
+### 16.1 General 탭 기본 기능 테스트
+
+#### TC-GEN-01: Language 변경
+- **권한**: User/Admin/Master
+- **테스트 단계**:
+  1. Language 드롭다운 클릭
+  2. 다른 언어 선택 (예: English)
+  3. 저장 버튼 클릭
+  4. 설정 팝업 재오픈하여 선택값 확인
+- **예상 결과**:
+  - 선택한 언어로 변경됨
+  - 저장 후 유지됨
+
+#### TC-GEN-02: Data Loading Methods - LIMS와 CSV 상호 배타
+- **권한**: Admin/Master
+- **테스트 단계**:
+  1. LIMS(.plrn) 선택
+  2. CSV 선택 시도 (비활성화 확인)
+  3. LIMS(.plrn) 선택 해제
+  4. CSV 선택
+  5. LIMS(.plrn) 선택 시도 (비활성화 확인)
+- **예상 결과**:
+  - LIMS 선택 시 CSV 비활성화
+  - CSV 선택 시 LIMS 비활성화
+
+#### TC-GEN-03: Data Loading Methods - Barcode 단독 선택 불가
+- **권한**: Admin/Master
+- **테스트 단계**:
+  1. 모든 Loading Methods 선택 해제
+  2. Barcode만 선택 시도
+  3. 경고 메시지 확인
+- **예상 결과**:
+  - Barcode 단독 선택 불가
+  - 경고 메시지 표시 및 선택 취소
+
+#### TC-GEN-04: 조건부 필수 항목 - CSV Header Settings
+- **권한**: User/Admin/Master
+- **테스트 단계**:
+  1. Export Format을 CSV로 선택
+  2. Language를 특정 언어(예: French)로 선택
+  3. CSV Header Settings 미선택 상태로 저장 시도
+  4. 경고 팝업 확인
+  5. CSV Header Settings 선택 후 저장
+- **예상 결과**:
+  - 미선택 시: "⚠️ CSV Header Settings를 선택해주세요." 경고
+  - 선택 후: 정상 저장
+
+#### TC-GEN-05: Folder 경로 설정
+- **권한**: User/Admin/Master
+- **테스트 단계**:
+  1. Open PCR Data File Folder Path의 📂 버튼 클릭
+  2. 폴더 선택
+  3. 경로가 텍스트 필드에 표시되는지 확인
+  4. 저장 후 유지 확인
+- **예상 결과**:
+  - 선택한 폴더 경로가 표시됨
+  - 저장 후 유지됨
+
+### 16.2 GDPR 모드 기능 테스트
+
+#### TC-GDPR-01: GDPR 모드 토글 (Master Only)
+- **권한**: Master
+- **전제조건**: General 탭 열기
+- **테스트 단계**:
+  1. PCR Raw Data Type과 타겟 약어 사용 사이에 "GDPR 모드" 항목 확인
+  2. 토글 스위치 클릭하여 OFF → ON 변경
+  3. 토글 스위치 클릭하여 ON → OFF 변경
+- **예상 결과**:
+  - GDPR 모드 토글이 정상적으로 동작
+  - ON/OFF 상태가 즉시 반영됨
+  - "저장되지 않은 변경사항" 표시됨
+
+#### TC-GDPR-02: csv File Open Option - Name 옵션 숨김
+- **권한**: Admin/Master
+- **전제조건**: Loading Methods에서 CSV 선택
+- **테스트 단계**:
+  1. GDPR 모드 OFF 상태에서 csv File Open Option 옵션 확인
+  2. GDPR 모드를 ON으로 변경
+  3. csv File Open Option 옵션 재확인
+  4. GDPR 모드를 다시 OFF로 변경
+- **예상 결과**:
+  - GDPR OFF: No, Sample Id, Name 표시
+  - GDPR ON: No, Sample Id만 표시 (Name 숨김)
+  - GDPR 다시 OFF: No, Sample Id, Name 모두 표시
+
+#### TC-GDPR-03: plrn File Open Option - Name 옵션 숨김
+- **권한**: Admin/Master
+- **전제조건**: Loading Methods에서 LIMS(.plrn) 선택
+- **테스트 단계**:
+  1. GDPR 모드 OFF 상태에서 plrn File Open Option 확인
+  2. Barcode와 Name 각각 No, Sample Id, Name 옵션 확인
+  3. GDPR 모드를 ON으로 변경
+  4. Barcode와 Name 옵션 재확인
+- **예상 결과**:
+  - GDPR OFF: Barcode, Name 모두 No, Sample Id, Name 표시
+  - GDPR ON: Barcode, Name 모두 No, Sample Id만 표시 (Name 숨김)
+
+#### TC-GDPR-04: plrn File Open Option - 같은 옵션 선택 제약
+- **권한**: Admin/Master
+- **전제조건**: Loading Methods에서 LIMS(.plrn) 선택, GDPR OFF
+- **테스트 단계**:
+  1. Barcode에서 "Sample Id" 선택
+  2. Name에서 "Sample Id" 선택 시도
+  3. Barcode에서 "Name" 선택
+  4. Name에서 "Name" 선택 시도
+  5. Barcode에서 "No" 선택
+  6. Name에서 "No" 선택 시도
+- **예상 결과**:
+  - Sample Id, Name은 Barcode와 Name에서 동시 선택 불가
+  - 같은 옵션 선택 시도 시 경고 알림: "⚠️ Barcode와 Name은 같은 옵션을 선택할 수 없습니다."
+  - No는 Barcode와 Name 모두 선택 가능
+
+#### TC-GDPR-05: 기능별 권한 설정 - GDPR 관련기능 활성화
+- **권한**: Master
+- **전제조건**: General > 기능별 권한 설정 서브탭 열기
+- **테스트 단계**:
+  1. GDPR 모드 OFF 상태에서 "GDPR 관련기능" 항목 확인
+  2. GDPR 모드를 ON으로 변경 후 재확인
+  3. GDPR 모드를 다시 OFF로 변경 후 재확인
+- **예상 결과**:
+  - GDPR OFF: 회색 표시, "(GDPR 모드 OFF)" 라벨, 체크박스 비활성화
+  - GDPR ON: 정상 표시, Admin/User 체크박스 활성화
+  - GDPR 다시 OFF: 회색 표시로 복귀
+
+#### TC-GDPR-06: 분석 탭 닫기 경고 - GDPR 모드 변경
+- **권한**: Master
+- **전제조건**: GDPR 모드 변경 후 저장 시도
+- **테스트 단계**:
+  1. GDPR 모드를 OFF에서 ON으로 변경
+  2. 저장 버튼 클릭
+  3. 분석 탭 닫힘 경고 팝업 확인
+  4. 변경된 설정 항목에 "GDPR 모드" 표시 확인
+  5. [취소] 클릭 후 GDPR 모드를 다시 OFF로 변경
+  6. 저장 버튼 클릭 및 경고 팝업 재확인
+- **예상 결과**:
+  - GDPR 모드 변경 시 "분석 탭 닫힘 안내" 팝업 표시
+  - 변경된 설정 항목 목록에 "GDPR 모드" 포함
+  - [취소] 클릭 시 저장 취소
+  - [확인 후 저장] 클릭 시 분석 탭 닫기 → 설정 저장
+
+### 16.3 csv/plrn File Open Option 테스트
+
+#### TC-FILE-01: csv File Open Option 필수 선택
+- **권한**: Admin/Master
+- **전제조건**: Loading Methods에서 CSV 선택
+- **테스트 단계**:
+  1. csv File Open Option을 선택하지 않은 상태로 저장 시도
+  2. 경고 팝업 확인
+  3. csv File Open Option에서 "No" 선택 후 저장
+- **예상 결과**:
+  - 미선택 시: "⚠️ CSV File Open Option을 선택해주세요." 경고
+  - 선택 후: 정상 저장
+
+#### TC-FILE-02: plrn File Open Option 선택
+- **권한**: Admin/Master
+- **전제조건**: Loading Methods에서 LIMS(.plrn) 선택
+- **테스트 단계**:
+  1. Barcode: "Sample Id", Name: "No" 선택 후 저장
+  2. Barcode: "No", Name: "Sample Id" 선택 후 저장
+  3. Barcode: "No", Name: "No" 선택 후 저장
+- **예상 결과**:
+  - 모든 조합에서 정상 저장
+  - 선택값이 설정에 반영됨
+
+### 16.4 Display Setting 탭 테스트
+
+#### TC-DISP-01: Result View 변경
+- **권한**: User/Admin/Master
+- **테스트 단계**:
+  1. Result View를 "Simple"에서 "Detailed"로 변경
+  2. 저장 버튼 클릭
+  3. 분석 탭 닫힘 경고 확인
+  4. [확인 후 저장] 클릭
+- **예상 결과**:
+  - Result View 변경 시 분석 탭 닫힘 경고 표시
+  - 설정 정상 저장
+
+#### TC-DISP-02: Target on/off - Assay 선택 및 Target 토글
+- **권한**: Master
+- **전제조건**: Display > Target on/off 서브탭
+- **테스트 단계**:
+  1. 검색창에 Assay 이름 입력하여 검색
+  2. 검색된 Assay 클릭하여 선택
+  3. 하단에 Target 목록 표시 확인
+  4. 특정 Target의 토글 스위치를 ON → OFF 변경
+  5. 저장 버튼 클릭
+  6. 분석 탭 닫힘 경고 확인
+- **예상 결과**:
+  - Assay 검색 및 선택 정상 동작
+  - Target 목록 표시됨
+  - Target on/off 토글 정상 동작
+  - 저장 시 분석 탭 닫힘 경고 표시
+
+#### TC-DISP-03: Target on/off - 전체 ON/OFF 버튼
+- **권한**: Master
+- **전제조건**: Display > Target on/off 서브탭, Assay 선택됨
+- **테스트 단계**:
+  1. [전체 OFF] 버튼 클릭
+  2. 모든 Target이 OFF 상태인지 확인
+  3. [전체 ON] 버튼 클릭
+  4. 모든 Target이 ON 상태인지 확인
+- **예상 결과**:
+  - 전체 OFF: 모든 Target OFF
+  - 전체 ON: 모든 Target ON
+
+#### TC-DISP-04: Sample Index Setting 권한 확인
+- **권한**: User, Admin, Master
+- **테스트 단계**:
+  1. User 권한으로 Display Setting 탭에서 Sample Index Setting 항목 확인
+  2. Admin 권한으로 확인
+  3. Master 권한으로 확인
+- **예상 결과**:
+  - User: Sample Index Setting 표시 안 됨
+  - Admin: Sample Index Setting 표시됨
+  - Master: Sample Index Setting 표시됨
+
+### 16.5 Export 탭 테스트
+
+#### TC-EXP-01: LIS Export Setting 기본 설정
+- **권한**: Admin/Master
+- **테스트 단계**:
+  1. Auto Export 토글을 ON으로 변경
+  2. Sample to Export 선택 (All Samples/Selected Samples)
+  3. Export Format 선택 (xlsx/csv)
+  4. 저장 버튼 클릭
+- **예상 결과**:
+  - 모든 설정이 정상적으로 변경됨
+  - 저장 후 유지됨
+
+#### TC-EXP-02: HL7 Transfer Setting
+- **권한**: Admin/Master
+- **전제조건**: Export > HL7 Transfer Setting 서브탭
+- **테스트 단계**:
+  1. HL7 Version 선택
+  2. HL7 Auto Send 토글 ON
+  3. HL7 Server IP 입력
+  4. HL7 Server Port 입력
+  5. 저장 버튼 클릭
+- **예상 결과**:
+  - 모든 HL7 설정이 정상 입력됨
+  - 저장 후 유지됨
+
+#### TC-EXP-03: HL7 Abbreviation Setting
+- **권한**: Master
+- **전제조건**: Export > HL7 Abbreviation Setting 서브탭
+- **테스트 단계**:
+  1. Assay 목록에서 특정 Assay 선택
+  2. ASSAY CODE 입력
+  3. 하단 Target 목록에서 TARGET CODE 입력
+  4. 저장 버튼 클릭
+- **예상 결과**:
+  - ASSAY CODE, TARGET CODE 정상 입력
+  - 저장 후 유지됨
+
+#### TC-EXP-04: 조건부 필수 항목 - Use Prefix
+- **권한**: Admin/Master
+- **테스트 단계**:
+  1. Use Prefix 토글을 ON으로 변경
+  2. Prefix Type이 표시되는지 확인
+  3. Prefix Type 미선택 상태로 저장 시도
+  4. 경고 팝업 확인
+  5. Prefix Type 선택 후 저장
+- **예상 결과**:
+  - Use Prefix ON 시 Prefix Type 표시됨
+  - 미선택 시: "⚠️ Prefix Type을 선택해주세요." 경고
+  - 선택 후: 정상 저장
+
+### 16.6 Print 탭 테스트
+
+#### TC-PRINT-01: Print Range 설정
+- **권한**: Admin/Master
+- **테스트 단계**:
+  1. Print Range를 "All Samples"에서 "Selected Samples"로 변경
+  2. Print Items에서 number, sampleId 체크박스 선택/해제
+  3. 저장 버튼 클릭
+- **예상 결과**:
+  - Print Range 변경됨
+  - Print Items 체크박스 동작 정상
+  - 저장 후 유지됨
+
+#### TC-PRINT-02: 조건부 필수 항목 - Add Logo to Print
+- **권한**: Admin/Master
+- **테스트 단계**:
+  1. Add Logo to Print 토글을 ON으로 변경
+  2. Logo Print Location이 표시되는지 확인
+  3. Logo Print Location 미선택 상태로 저장 시도
+  4. 경고 팝업 확인
+  5. Logo Print Location 선택 후 저장
+- **예상 결과**:
+  - Add Logo ON 시 Logo Print Location 표시됨
+  - 미선택 시: "⚠️ Logo Print Location을 선택해주세요." 경고
+  - 선택 후: 정상 저장
+
+#### TC-PRINT-03: 조건부 필수 항목 - Add Watermark to Print
+- **권한**: Admin/Master
+- **테스트 단계**:
+  1. Add Watermark to Print 토글을 ON으로 변경
+  2. Watermark Layout이 표시되는지 확인
+  3. Watermark Layout 미선택 상태로 저장 시도
+  4. 경고 팝업 확인
+  5. Watermark Layout 선택 후 저장
+- **예상 결과**:
+  - Add Watermark ON 시 Watermark Layout 표시됨
+  - 미선택 시: "⚠️ Watermark Layout을 선택해주세요." 경고
+  - 선택 후: 정상 저장
+
+### 16.7 Assay Pack 탭 테스트
+
+#### TC-ASSAY-01: Assay Pack 검색
+- **권한**: Master
+- **테스트 단계**:
+  1. 검색창에 Assay 이름 입력
+  2. 검색 결과 확인
+  3. 제조사 이름으로 검색
+  4. 검색 결과 확인
+- **예상 결과**:
+  - Assay Name으로 검색 정상 동작
+  - 제조사로 검색 정상 동작
+  - 부분 일치 검색 동작
+
+#### TC-ASSAY-02: Assay Pack 추가
+- **권한**: Master
+- **테스트 단계**:
+  1. [➕ Assay Pack 추가] 버튼 클릭
+  2. 모달에서 필수 항목 미입력 상태로 추가 시도
+  3. 경고 확인
+  4. 모든 필수 항목 입력 후 추가
+  5. 목록에서 추가된 Assay 확인
+- **예상 결과**:
+  - 필수 항목 미입력 시 경고
+  - 필수 항목 입력 후 정상 추가됨
+  - 즉시 적용됨 (저장 버튼 없이)
+
+#### TC-ASSAY-03: Assay Pack 삭제
+- **권한**: Master
+- **테스트 단계**:
+  1. 목록에서 Assay의 삭제 버튼 클릭
+  2. 삭제 확인 팝업에서 [취소] 클릭
+  3. Assay가 유지되는지 확인
+  4. 다시 삭제 버튼 클릭
+  5. 삭제 확인 팝업에서 [삭제] 클릭
+  6. Assay가 목록에서 제거되는지 확인
+- **예상 결과**:
+  - [취소] 시 삭제 취소
+  - [삭제] 시 목록에서 제거됨
+  - 즉시 적용됨 (저장 버튼 없이)
+
+### 16.8 Backup/Restore 탭 테스트
+
+#### TC-BACKUP-01: Manual Export
+- **권한**: User/Admin/Master
+- **테스트 단계**:
+  1. 설정 변경 후 저장하지 않은 상태
+  2. [Manual Export] 버튼 클릭
+  3. 경고 팝업 확인
+  4. 설정 저장 후 다시 [Manual Export] 클릭
+  5. 파일 저장 대화상자에서 위치 선택
+  6. 파일 저장 확인
+  7. 성공 메시지 확인
+- **예상 결과**:
+  - 저장 안 된 변경사항 있을 때 경고 표시
+  - 파일 정상 저장됨
+  - 성공 메시지 표시
+
+#### TC-BACKUP-02: Auto Backup
+- **권한**: User/Admin/Master
+- **테스트 단계**:
+  1. 설정 변경
+  2. 저장 버튼 클릭
+  3. 저장 완료 후 Auto Backup 파일 생성 확인
+  4. Backup File List에서 최신 파일 확인
+- **예상 결과**:
+  - 저장 시 자동으로 백업 파일 생성
+  - 백그라운드 동작 (사용자 알림 없음)
+  - 목록에 추가됨
+
+#### TC-BACKUP-03: Scheduled Backup 설정
+- **권한**: Admin/Master
+- **테스트 단계**:
+  1. Scheduled Interval을 "Daily"로 선택
+  2. Scheduled Interval을 "Weekly"로 변경
+  3. 요일 선택 필드 표시 확인
+  4. 요일 미선택 상태로 저장 시도
+  5. 경고 팝업 확인
+  6. 요일 선택 후 저장
+- **예상 결과**:
+  - Weekly 선택 시 요일 선택 필드 표시
+  - 미선택 시: "⚠️ 백업 요일을 선택해주세요." 경고
+  - 선택 후: 정상 저장
+
+#### TC-BACKUP-04: Scheduled Backup 설정 - Monthly
+- **권한**: Admin/Master
+- **테스트 단계**:
+  1. Scheduled Interval을 "Monthly"로 선택
+  2. 날짜 선택 필드 표시 확인
+  3. 날짜 미선택 상태로 저장 시도
+  4. 경고 팝업 확인
+  5. 날짜 선택 후 저장
+- **예상 결과**:
+  - Monthly 선택 시 날짜 선택 필드 표시
+  - 미선택 시: "⚠️ 백업 날짜를 선택해주세요." 경고
+  - 선택 후: 정상 저장
+
+#### TC-BACKUP-05: Restore - Backup File List에서 복원
+- **권한**: Admin/Master
+- **테스트 단계**:
+  1. Auto Backup 파일 목록에서 [복원] 버튼 클릭
+  2. Diff 확인 모달 표시 확인
+  3. 변경사항 테이블 확인 (Category, Key, Current, File, Status)
+  4. [취소] 클릭
+  5. 다시 [복원] 버튼 클릭
+  6. [적용하기] 클릭
+  7. "저장되지 않은 변경사항" 표시 확인
+  8. 저장 버튼 클릭
+- **예상 결과**:
+  - Diff 모달 정상 표시
+  - 변경사항 비교 정상 동작
+  - [적용하기] 시 Pending 상태로 설정 반영
+  - 저장 버튼으로 최종 적용
+
+#### TC-BACKUP-06: Import - 파일 직접 불러오기
+- **권한**: Admin/Master
+- **테스트 단계**:
+  1. [Import] 버튼 클릭
+  2. 파일 선택 대화상자에서 [취소] 클릭
+  3. 작업 취소 확인
+  4. 다시 [Import] 버튼 클릭
+  5. 백업 파일 선택
+  6. Diff 모달 표시 확인
+  7. [적용하기] 클릭
+  8. Import 성공 메시지 확인
+- **예상 결과**:
+  - 파일 선택 대화상자 정상 동작
+  - Diff 모달 표시
+  - Import 성공 메시지 표시
+  - 저장 대기 상태
+
+#### TC-BACKUP-07: Import - 동일한 설정 파일
+- **권한**: Admin/Master
+- **테스트 단계**:
+  1. 현재 설정과 동일한 백업 파일 Import
+  2. "동일한 설정 내용입니다" alert 팝업 확인
+- **예상 결과**:
+  - 모든 설정이 동일하면 Diff 모달 표시 안 됨
+  - alert 팝업으로 안내
+
+#### TC-BACKUP-08: Keep Recent Count 설정
+- **권한**: Admin/Master
+- **테스트 단계**:
+  1. Keep Recent Count를 5로 설정
+  2. 저장
+  3. 6번 이상 설정 저장 (Auto Backup 생성)
+  4. Auto Backup 파일 목록 확인
+- **예상 결과**:
+  - 설정된 개수만큼만 유지됨
+  - 오래된 파일 자동 삭제
+
+### 16.9 권한별 종합 테스트
+
+#### TC-AUTH-01: User 권한 전체 확인
+- **권한**: User
+- **테스트 단계**:
+  1. Settings 팝업 열기
+  2. 표시되는 탭 확인 (General, Display Setting, Backup/Restore만)
+  3. Export, Print, Assay Pack 탭 표시 안 됨 확인
+  4. General 탭에서 접근 가능한 항목 확인
+  5. Display Setting 탭에서 Sample Index Setting 등 비표시 확인
+  6. Backup/Restore 탭에서 Manual Export만 가능 확인
+- **예상 결과**:
+  - User 권한에 맞는 탭과 설정만 표시
+  - 제한된 기능만 접근 가능
+
+#### TC-AUTH-02: Admin 권한 전체 확인
+- **권한**: Admin
+- **테스트 단계**:
+  1. Settings 팝업 열기
+  2. 표시되는 탭 확인 (Assay Pack 제외 모두 표시)
+  3. Export, Print 탭 접근 가능 확인
+  4. Display Setting 탭에서 User보다 많은 항목 접근 확인
+  5. Backup/Restore 탭에서 모든 기능 접근 확인
+  6. Master 전용 서브탭 표시 안 됨 확인
+- **예상 결과**:
+  - Admin 권한에 맞는 탭과 설정 표시
+  - User보다 많은 기능 접근 가능
+  - Master 전용 기능은 접근 불가
+
+#### TC-AUTH-03: Master 권한 전체 확인
+- **권한**: Master
+- **테스트 단계**:
+  1. Settings 팝업 열기
+  2. 모든 탭 표시 확인
+  3. 모든 서브탭 표시 확인
+  4. 모든 설정 항목 접근 가능 확인
+  5. GDPR 모드 접근 확인
+  6. 기능별 권한 설정 서브탭 접근 확인
+- **예상 결과**:
+  - 모든 탭과 서브탭 표시
+  - 모든 설정에 접근 가능
+  - Master 전용 기능 모두 접근 가능
+
+### 16.10 통합 시나리오 테스트
+
+#### TC-INT-01: GDPR 모드 전체 워크플로우
+- **권한**: Master
+- **테스트 단계**:
+  1. GDPR 모드 OFF, CSV 선택, csv File Open Option에서 "Name" 선택
+  2. LIMS(.plrn) 선택, plrn Barcode: "Name", plrn Name: "Sample Id" 선택
+  3. GDPR 모드를 ON으로 변경
+  4. csv File Open Option 확인 (Name 옵션 숨김 확인)
+  5. plrn File Open Option 확인 (Name 옵션 숨김 확인)
+  6. 기능별 권한 설정에서 "GDPR 관련기능" 활성화 확인
+  7. 저장 버튼 클릭
+  8. 분석 탭 닫힘 경고 확인
+  9. [확인 후 저장] 클릭
+- **예상 결과**:
+  - GDPR ON 시 Name 옵션이 모두 숨겨짐
+  - 이전에 선택한 "Name" 값은 자동으로 조정되거나 유지
+  - GDPR 관련기능 활성화됨
+  - 분석 탭 닫힘 경고 표시됨
+  - 설정 정상 저장됨
+
+#### TC-INT-02: Import 후 GDPR 모드 적용
+- **권한**: Admin/Master
+- **테스트 단계**:
+  1. GDPR 모드 OFF 상태의 설정 파일 Export
+  2. GDPR 모드를 ON으로 변경하지 않은 상태에서 Import
+  3. Diff 모달에서 GDPR 모드 변경사항 확인
+  4. [적용하기] 클릭 후 Name 옵션 표시 확인
+- **예상 결과**:
+  - Import된 설정의 GDPR 모드가 OFF면 Name 옵션 표시됨
+  - Diff 모달에서 GDPR 모드 변경 여부 확인 가능
+
+---
+
+## 17. 변경 이력
 
 | 버전 | 날짜 | 작성자 | 변경 내용 |
 |------|------|--------|----------|
 | 1.0 | 2026-01-14 | AI | 인터랙션 설계서 초안 작성 (디자이너용) |
 | 1.1 | 2026-01-15 | AI | Import 중복 파일 확인 제거, Diff 모달 "동일" 상태 필터링, 변경사항 없을 때 안내 팝업 추가 |
-| 1.2 | 2026-01-19 | AI | GDPR 모드 추가, csv/plrn File Open Option 변경, 기능별 권한 설정 업데이트 |
+| 1.2 | 2026-01-19 | AI | GDPR 모드 추가, csv/plrn File Open Option 변경, 기능별 권한 설정 업데이트, 테스트 항목 추가 |
 
 **v1.2 주요 변경사항**:
 - General 탭에 "GDPR 모드" 추가 (Master Only, PCR Raw Data Type과 타겟 약어 사이 위치)
@@ -1088,6 +1624,7 @@ Diff 모달 표시
 - GDPR 모드 ON 시 csv/plrn File Open Option에서 Name 옵션 숨김
 - 기능별 권한 설정에 "GDPR 관련기능" 추가 (GDPR 모드 ON일 때만 활성화)
 - GDPR 모드 변경 시 분석탭 닫기 적용
+- 테스트 항목 섹션 추가 (GDPR 모드, File Open Option, 권한, 통합 시나리오 테스트)
 
 ---
 
