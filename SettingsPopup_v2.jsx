@@ -10,6 +10,7 @@ export default function SettingsPopup() {
   // 분석 탭에 영향을 주는 설정의 초기값 저장
   const initialCriticalSettings = useRef({
     pcrRawDataType: 'type1', // 디폴트값: type1
+    gdprMode: false, // GDPR 모드 디폴트: off
     sampleId: '', // 조건부 필수 (plrn/barcode 선택 시)
     resultView: 'Simple',
     ctValueDigit: 'Two Decimal Digit',
@@ -61,6 +62,7 @@ export default function SettingsPopup() {
     // General - 디폴트값: 첫 번째 옵션
     language: 'ko', // 디폴트: 한국어
     pcrRawDataType: 'type1', // 디폴트: Type 1
+    gdprMode: false, // GDPR 모드 (디폴트: off, Master Only)
     csvHeaderSettings: '', // CSV 포맷 && 특정 언어 선택 시 사용자가 반드시 선택 (조건부 필수)
     // 다중 선택 가능한 데이터 불러오기 방식 - 디폴트: Manual 선택
     loadingMethods: {
@@ -74,6 +76,7 @@ export default function SettingsPopup() {
     plateSettingFile: 'None',
     csvFileOpenOption: '', // (디폴트값 없음 - CSV 선택 시 조건부 필수)
     plateSetting: { manual: false, preset: false }, // (디폴트값 없음 - CSV 선택 시 조건부 필수)
+    plrnFileOpenOption: { barcode: '', name: '' }, // LIMS(.plrn) 선택 시 파일 열기 옵션
     sampleId: '', // (디폴트값 없음 - plrn 또는 barcode 선택 시 조건부 필수)
     targetAbbreviation: false,
     openPcrDataFileFolderPath: '',
@@ -293,6 +296,29 @@ export default function SettingsPopup() {
     setHasUnsavedChanges(true);
   };
 
+  const updatePlrnFileOption = (type, value) => {
+    // 처음 변경 시 현재 설정값 저장
+    if (!hasUnsavedChanges && !savedSettings.current) {
+      savedSettings.current = JSON.parse(JSON.stringify(settings));
+    }
+    
+    // Barcode와 Name은 같은 옵션을 선택할 수 없음
+    const otherType = type === 'barcode' ? 'name' : 'barcode';
+    const otherValue = settings.plrnFileOpenOption[otherType];
+    
+    // 같은 값을 선택하려고 할 때 (No는 중복 가능)
+    if (value !== 'No' && value === otherValue) {
+      alert(`⚠️ Barcode와 Name은 같은 옵션을 선택할 수 없습니다.`);
+      return;
+    }
+    
+    setSettings(prev => ({
+      ...prev,
+      plrnFileOpenOption: { ...prev.plrnFileOpenOption, [type]: value }
+    }));
+    setHasUnsavedChanges(true);
+  };
+
   const handleTabClick = (tabId) => {
     // 여러 탭의 변경사항을 한번에 저장할 수 있도록 경고 없이 탭 전환
     setActiveTab(tabId);
@@ -303,6 +329,7 @@ export default function SettingsPopup() {
     const initial = initialCriticalSettings.current;
     return (
       settings.pcrRawDataType !== initial.pcrRawDataType ||
+      settings.gdprMode !== initial.gdprMode ||
       settings.sampleId !== initial.sampleId ||
       settings.resultView !== initial.resultView ||
       settings.ctValueDigit !== initial.ctValueDigit ||
@@ -489,6 +516,7 @@ export default function SettingsPopup() {
     // 초기값 업데이트
     initialCriticalSettings.current = {
       pcrRawDataType: settings.pcrRawDataType,
+      gdprMode: settings.gdprMode,
       sampleId: settings.sampleId,
       resultView: settings.resultView,
       ctValueDigit: settings.ctValueDigit,
@@ -2516,6 +2544,17 @@ export default function SettingsPopup() {
                   </div>
                   )}
 
+                  {/* GDPR 모드 - Master만 */}
+                  {userPermission === 'master' && (
+                  <div className="setting-row">
+                    <div className="setting-label">GDPR 모드</div>
+                    <div className="setting-control">
+                      <div className={`toggle ${settings.gdprMode ? 'active' : ''}`} onClick={() => updateSetting('gdprMode', !settings.gdprMode)} />
+                      <span className="toggle-label">{settings.gdprMode ? 'ON' : 'OFF'}</span>
+                    </div>
+                  </div>
+                  )}
+
                   {/* 타겟 약어 사용 - Master, Admin */}
                   {(userPermission === 'master' || userPermission === 'admin') && (
                   <div className="setting-row">
@@ -2677,12 +2716,12 @@ export default function SettingsPopup() {
 
                       <div className="setting-row" style={{ background: '#f0fdf4' }}>
                         <div className="setting-label">
-                          csv File Open Option
+                          csv File Open Option(Sample Barcode)
                           <small>CSV 파일 열기 옵션</small>
                         </div>
                         <div className="setting-control">
                           <div className="radio-group">
-                            {['Sample No', 'Patient Id', 'Name'].map(opt => (
+                            {['No', 'Sample Id', 'Name'].filter(opt => !settings.gdprMode || opt !== 'Name').map(opt => (
                               <div key={opt} className={`radio-item ${settings.csvFileOpenOption === opt ? 'selected' : ''}`} onClick={() => updateSetting('csvFileOpenOption', opt)}>
                                 <div className="radio-dot" />
                                 {opt}
@@ -2692,6 +2731,54 @@ export default function SettingsPopup() {
                         </div>
                       </div>
                     </>
+                  )}
+
+                  {/* plrn 선택 시 plrn File Open Option 표시 */}
+                  {settings.loadingMethods.plrn && (
+                    <div className="setting-row" style={{ background: '#eff6ff' }}>
+                      <div className="setting-label">
+                        plrn File Open Option(Barcode, Name)
+                        <small>LIMS(.plrn) 파일 열기 옵션</small>
+                      </div>
+                      <div className="setting-control">
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                          {/* Barcode 옵션 */}
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                            <span style={{ minWidth: '80px', fontWeight: 500, color: '#374151' }}>Barcode:</span>
+                            <div className="radio-group" style={{ flex: 1 }}>
+                              {['No', 'Sample Id', 'Name'].filter(opt => !settings.gdprMode || opt !== 'Name').map(opt => (
+                                <div 
+                                  key={opt} 
+                                  className={`radio-item ${settings.plrnFileOpenOption.barcode === opt ? 'selected' : ''}`} 
+                                  onClick={() => updatePlrnFileOption('barcode', opt)}
+                                >
+                                  <div className="radio-dot" />
+                                  {opt}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                          {/* Name 옵션 */}
+                          {!settings.gdprMode && (
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                            <span style={{ minWidth: '80px', fontWeight: 500, color: '#374151' }}>Name:</span>
+                            <div className="radio-group" style={{ flex: 1 }}>
+                              {['No', 'Sample Id', 'Name'].map(opt => (
+                                <div 
+                                  key={opt} 
+                                  className={`radio-item ${settings.plrnFileOpenOption.name === opt ? 'selected' : ''}`} 
+                                  onClick={() => updatePlrnFileOption('name', opt)}
+                                >
+                                  <div className="radio-dot" />
+                                  {opt}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
                   )}
 
                   {/* plrn 또는 barcode 선택 시 Sample ID 표시 */}
@@ -2831,13 +2918,16 @@ export default function SettingsPopup() {
                             </div>
                           </td>
                         </tr>
-                        <tr>
+                        <tr style={{ opacity: settings.gdprMode ? 1 : 0.5 }}>
                           <td>
-                            <div className="feature-name">기능 B</div>
-                            <div className="feature-desc">기능 B에 대한 설명</div>
+                            <div className="feature-name">
+                              GDPR 관련기능
+                              {!settings.gdprMode && <span style={{ marginLeft: '8px', fontSize: '11px', color: '#ef4444', fontWeight: 500 }}>(GDPR 모드 OFF)</span>}
+                            </div>
+                            <div className="feature-desc">GDPR 규정 준수를 위한 데이터 처리 기능</div>
                           </td>
                           <td style={{ textAlign: 'center' }}>
-                            <div className="checkbox-item checked" style={{ justifyContent: 'center' }}>
+                            <div className={`checkbox-item ${settings.gdprMode ? 'checked' : 'disabled'}`} style={{ justifyContent: 'center', cursor: settings.gdprMode ? 'pointer' : 'not-allowed' }}>
                               <div className="checkbox-box">
                                 <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
                                   <path d="M1 5L4.5 8.5L11 1" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -2846,7 +2936,7 @@ export default function SettingsPopup() {
                             </div>
                           </td>
                           <td style={{ textAlign: 'center' }}>
-                            <div className="checkbox-item" style={{ justifyContent: 'center' }}>
+                            <div className={`checkbox-item ${settings.gdprMode ? '' : 'disabled'}`} style={{ justifyContent: 'center', cursor: settings.gdprMode ? 'pointer' : 'not-allowed' }}>
                               <div className="checkbox-box">
                                 <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
                                   <path d="M1 5L4.5 8.5L11 1" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -4507,6 +4597,9 @@ export default function SettingsPopup() {
                 <ul>
                   {settings.pcrRawDataType !== initialCriticalSettings.current.pcrRawDataType && (
                     <li>PCR Raw Data Type (PCR 장비 SW설정)</li>
+                  )}
+                  {settings.gdprMode !== initialCriticalSettings.current.gdprMode && (
+                    <li>GDPR 모드</li>
                   )}
                   {settings.sampleId !== initialCriticalSettings.current.sampleId && (
                     <li>Sample ID</li>
