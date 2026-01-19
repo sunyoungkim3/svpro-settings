@@ -1,7 +1,8 @@
 # Settings 팝업 인터랙션 설계서
 
-**문서 버전**: 1.0  
+**문서 버전**: 1.1  
 **작성일**: 2026-01-14  
+**최종 수정일**: 2026-01-19  
 **목적**: 기능 및 인터랙션 정의
 
 ---
@@ -168,6 +169,7 @@ SV Pro 소프트웨어의 전체 설정을 관리하는 모달 팝업입니다. 
 3. **분석 탭 영향 확인**
    - 다음 설정 변경 시 경고:
      - PCR Raw Data Type
+     - GDPR 모드
      - Sample ID
      - Result View
      - C(t) Value Digit
@@ -434,7 +436,8 @@ Restore는 두 가지 방법으로 수행할 수 있습니다:
 | Export Format = CSV + 특정 언어* | AND 조건 | CSV Header Settings | General | 없음 | 필수 |
 | Loading Methods | LIMS(.plrn) 또는 Barcode 선택 | Sample ID | General | 없음 | 필수 |
 | Loading Methods | CSV 선택 | Plate Setting | General | 없음 | 필수 (최소 1개) |
-| Loading Methods | CSV 선택 | CSV File Open Option | General | 없음 | 필수 |
+| Loading Methods | CSV 선택 | csv File Open Option(Sample Barcode) | General | 없음 | 필수 |
+| Loading Methods | LIMS(.plrn) 선택 | plrn File Open Option(Barcode, Name) | General | 없음 | 선택 사항 (Barcode와 Name 각각 선택) |
 | Use Prefix | ON | Prefix Type | Export | 없음 | 필수 |
 | Create New Folder | ON | Folder Name Type | Export | 없음 | 필수 |
 | Add Logo to Print | ON | Logo Print Location | Print | 없음 | 필수 |
@@ -474,7 +477,42 @@ Add Watermark to Print: [ON]
 - 들여쓰기로 계층 관계 표현
 - 선택되지 않은 필수 항목은 플레이스홀더 텍스트 표시 ("선택하세요")
 
-### 7.3 Target On/Off (Display Setting 서브탭)
+### 7.3 GDPR 모드 (General 탭)
+
+**위치**: PCR Raw Data Type과 타겟 약어 사용 사이
+
+**권한**: Master만 접근 가능
+
+**UI**: 토글 스위치 (ON/OFF)
+
+**디폴트값**: OFF
+
+**GDPR 모드 ON 시 동작**:
+
+1. **csv File Open Option(Sample Barcode) 옵션 변경**
+   - GDPR OFF: No, Sample Id, Name
+   - GDPR ON: No, Sample Id (Name 옵션 숨김)
+
+2. **plrn File Open Option(Barcode, Name) 옵션 변경**
+   - GDPR OFF: 
+     - Barcode: No, Sample Id, Name
+     - Name: No, Sample Id, Name
+   - GDPR ON:
+     - Barcode: No, Sample Id (Name 옵션 숨김)
+     - Name: No, Sample Id (Name 옵션 숨김)
+
+3. **기능별 권한 설정 (General > 기능별 권한 설정 서브탭)**
+   - "GDPR 관련기능" 항목 활성화
+   - GDPR 모드 OFF 시: 회색 표시 + "(GDPR 모드 OFF)" 라벨, 체크박스 비활성화
+   - GDPR 모드 ON 시: 정상 표시, Admin/User 권한 설정 가능
+
+4. **분석 탭 닫기**
+   - GDPR 모드 변경 후 저장 시 "분석 탭 닫힘 경고" 팝업 표시
+   - 변경된 설정 항목에 "GDPR 모드" 표시
+
+**참고**: GDPR 모드는 개인정보(Name) 관련 옵션을 제한하여 GDPR 규정 준수를 지원
+
+### 7.4 Target On/Off (Display Setting 서브탭)
 
 **레이아웃**: 상하 2행
 
@@ -508,7 +546,7 @@ Add Watermark to Print: [ON]
 **중요**:
 - 저장 시 "분석 탭 닫힘 경고" 표시
 
-### 7.4 HL7 Abbreviation Setting (Export 서브탭)
+### 7.5 HL7 Abbreviation Setting (Export 서브탭)
 
 **레이아웃**: 상하 2행
 
@@ -649,6 +687,7 @@ Add Watermark to Print: [ON]
 - **General 탭**:
   - Language  
   - PCR Raw Data Type  
+  - GDPR 모드 (디폴트: OFF, Master만)
   - Data Loading Methods (디폴트: 첫 번째 옵션 체크)
   - 폴더 경로 설정들 (선택)
 
@@ -680,7 +719,11 @@ Add Watermark to Print: [ON]
 - CSV Header Settings (CSV + 특정 언어)
 - Sample ID (LIMS/Barcode 선택 시)
 - Plate Setting (CSV 선택 시)
-- CSV File Open Option (CSV 선택 시)
+- csv File Open Option(Sample Barcode) (CSV 선택 시) - 옵션: No, Sample Id, Name
+- plrn File Open Option(Barcode, Name) (LIMS(.plrn) 선택 시)
+  - Barcode: No, Sample Id, Name 중 선택
+  - Name: No, Sample Id, Name 중 선택
+  - 제약: Barcode와 Name은 같은 옵션(No 제외) 선택 불가
 - Prefix Type (Use Prefix ON)
 - Folder Name Type (Create New Folder ON)
 - Logo Print Location (Add Logo ON)
@@ -1036,6 +1079,15 @@ Diff 모달 표시
 |------|------|--------|----------|
 | 1.0 | 2026-01-14 | AI | 인터랙션 설계서 초안 작성 (디자이너용) |
 | 1.1 | 2026-01-15 | AI | Import 중복 파일 확인 제거, Diff 모달 "동일" 상태 필터링, 변경사항 없을 때 안내 팝업 추가 |
+| 1.2 | 2026-01-19 | AI | GDPR 모드 추가, csv/plrn File Open Option 변경, 기능별 권한 설정 업데이트 |
+
+**v1.2 주요 변경사항**:
+- General 탭에 "GDPR 모드" 추가 (Master Only, PCR Raw Data Type과 타겟 약어 사이 위치)
+- csv File Open Option 이름 변경: "csv File Open Option(Sample Barcode)", 옵션: No, Sample Id, Name
+- plrn File Open Option 추가: Barcode와 Name 각각 No, Sample Id, Name 중 선택 (같은 옵션 선택 불가)
+- GDPR 모드 ON 시 csv/plrn File Open Option에서 Name 옵션 숨김
+- 기능별 권한 설정에 "GDPR 관련기능" 추가 (GDPR 모드 ON일 때만 활성화)
+- GDPR 모드 변경 시 분석탭 닫기 적용
 
 ---
 
