@@ -2537,8 +2537,9 @@ export default function SettingsPopup() {
                     </div>
                     <div className="setting-control">
                       <select value={settings.pcrRawDataType} onChange={(e) => updateSetting('pcrRawDataType', e.target.value)}>
-                        <option value="type1">Type 1</option>
-                        <option value="type2">Type 2</option>
+                        <option value="CFX96DX">CFX96DX</option>
+                        <option value="CFX384">CFX384</option>
+                        <option value="CFX opus">CFX opus</option>
                       </select>
                     </div>
                   </div>
