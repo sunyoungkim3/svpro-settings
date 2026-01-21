@@ -15,7 +15,8 @@ export default function SettingsPopup() {
     resultView: 'Simple',
     ctValueDigit: 'Two Decimal Digit',
     sampleIndexSetting: 'enable',
-    targetOnOffChanged: false
+    targetOnOffChanged: false,
+    intendedUse: 'IVD' // SW type도 중요 설정에 포함
   });
   
   // 모든 설정의 초기값 저장 (저장 취소 시 복원용)
@@ -335,11 +336,18 @@ export default function SettingsPopup() {
       settings.resultView !== initial.resultView ||
       settings.ctValueDigit !== initial.ctValueDigit ||
       settings.sampleIndexSetting !== initial.sampleIndexSetting ||
-      targetOnOffChanged
+      targetOnOffChanged ||
+      settings.intendedUse !== initial.intendedUse
     );
   };
 
   const handleSave = () => {
+        // SW type 변경 시 재시작 안내
+        if (settings.intendedUse !== initialCriticalSettings.current.intendedUse) {
+          alert('SW type(IVD/RUO) 설정이 변경되어 프로그램이 재시작됩니다. 변경 사항 적용을 위해 프로그램이 자동으로 재시작됩니다.');
+          window.location.reload(); // 실제 환경에서는 Electron 등에서 app 재시작 API 호출 필요
+          return;
+        }
     // === 조건부 필수 항목 검증 (디폴트값이 없는 조건부 노출 항목만) ===
     
     // Loading Methods - 최소 1개 선택 필수 (디폴트로 Manual 선택되어 있음)
@@ -522,7 +530,8 @@ export default function SettingsPopup() {
       resultView: settings.resultView,
       ctValueDigit: settings.ctValueDigit,
       sampleIndexSetting: settings.sampleIndexSetting,
-      targetOnOffChanged: false
+      targetOnOffChanged: false,
+      intendedUse: settings.intendedUse
     };
     // 저장된 설정값 초기화
     savedSettings.current = null;
@@ -2535,6 +2544,9 @@ export default function SettingsPopup() {
                           />
                           RUO
                         </label>
+                        <div style={{ color: '#ef4444', marginTop: 4, fontSize: 13 }}>
+                          ※ SW type 변경 시 프로그램이 재시작됩니다.
+                        </div>
                       </div>
                     </div>
                   )}
