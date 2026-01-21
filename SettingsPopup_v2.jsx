@@ -60,6 +60,7 @@ export default function SettingsPopup() {
 
   const [settings, setSettings] = useState({
     // General - 디폴트값: 첫 번째 옵션
+    intendedUse: 'IVD', // 디폴트: IVD
     language: 'ko', // 디폴트: 한국어
     pcrRawDataType: 'type1', // 디폴트: Type 1
     gdprMode: false, // GDPR 모드 (디폴트: off, Master Only)
@@ -2508,6 +2509,36 @@ export default function SettingsPopup() {
               {/* General Tab */}
               {activeTab === 'general' && (
                 <>
+
+                  {/* Intended Use - IVD/RUO 라디오 박스 */}
+                  {userPermission === 'master' && (
+                    <div className="setting-row">
+                      <div className="setting-label">SW type</div>
+                      <div className="setting-control">
+                        <label style={{ marginRight: '16px' }}>
+                          <input
+                            type="radio"
+                            name="intendedUse"
+                            value="IVD"
+                            checked={settings.intendedUse === 'IVD'}
+                            onChange={() => updateSetting('intendedUse', 'IVD')}
+                          />
+                          IVD
+                        </label>
+                        <label>
+                          <input
+                            type="radio"
+                            name="intendedUse"
+                            value="RUO"
+                            checked={settings.intendedUse === 'RUO'}
+                            onChange={() => updateSetting('intendedUse', 'RUO')}
+                          />
+                          RUO
+                        </label>
+                      </div>
+                    </div>
+                  )}
+
                   {/* Language - 모든 권한 */}
                   <div className="setting-row">
                     <div className="setting-label">Language</div>
